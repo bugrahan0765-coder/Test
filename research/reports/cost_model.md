@@ -25,3 +25,20 @@ Hypothesis rules and pass criteria were not changed. All v2 runs are logged as s
 | B2 | US100 +0.012 R (t 1.33), US500 ~0 | rejected |
 | B3 | L=120,k=3,long-only: US100 +0.03 R (t 1.48), US500 +0.015, XAUUSD +0.014 | rejected |
 | C1 | 0 candidates of 1,512; 3 configs with discovery t > 2 vs ~30 expected under the null | rejected |
+
+## Measured broker quotes (user's prop account MT5, 2026-10-07 02:40 Turkey time = Asian session)
+Raw spreads shown in Market Watch (commission and swaps not yet known; firm to be confirmed):
+
+| Symbol | Spread | Price | Spread in bp | v2 assumption |
+|---|---|---|---|---|
+| USTEC (US100) | 1.00 | 31,243 | 0.32 | 1.0 (conservative) |
+| US500 | 0.50 | 7,829 | 0.64 | 1.0 (conservative) |
+| XAUUSD | 0.53 | 4,166 | 1.27 | 1.0 (slightly optimistic) |
+| EURUSD | 0.00001 | 1.1254 | 0.09 | 0.6 incl. commission |
+| GBPUSD | 0.00001 | 1.3269 | 0.08 | 0.6 incl. commission |
+| USDJPY | 0.003 | 158.24 | 0.19 | 0.6 incl. commission |
+| AUDUSD | 0.00002 | 0.6981 | 0.29 | 0.6 incl. commission |
+| USDCHF | 0.00002 | 0.8323 | 0.24 | 0.6 incl. commission |
+| USDCAD | 0 | 1.4212 | 0.00 | 0.6 incl. commission |
+
+Asian-session quotes are usually the widest; NY-session quotes still to be captured.
