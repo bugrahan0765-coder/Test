@@ -43,6 +43,17 @@ SESSIONS = {
     "XAUUSD": Session("America/New_York", "08:20", "13:30"),  # COMEX gold pit hours
 }
 
+# Months dropped from research because the HistData source is incomplete or wrong
+# (see research/reports/data_quality.md). GER40 2021-2023 is not even the DAX.
+_BAD_2023 = ["2023-03", "2023-04", "2023-05", "2023-06", "2023-07"]
+EXCLUDED_MONTHS = {
+    "US100": _BAD_2023,
+    "US500": ["2016-08", "2017-05", "2017-07", "2017-09", "2017-10", "2017-11"] + _BAD_2023,
+    "XAUUSD": _BAD_2023,
+    "GER40": [f"{y}-{m:02d}" for y in range(2015, 2019) for m in range(1, 13)]
+    + ["2020-12"] + [f"{y}-{m:02d}" for y in (2021, 2022, 2023) for m in range(1, 13)],
+}
+
 SLIPPAGE = {"US100": 0.5, "US500": 0.25, "GER40": 0.5, "XAUUSD": 0.10}
 
 
@@ -55,7 +66,12 @@ def load_period(symbol: str, period: str, unlock: bool = False, root: Path = DAT
     if period == "LOCKED" and not unlock:
         raise PermissionError("the locked test period is opened only once, for the final portfolio")
     start, end = PERIODS[period]
-    return load_bars(symbol, "1min", start=start, end=end, root=root)
+    bars = load_bars(symbol, "1min", start=start, end=end, root=root)
+    bad = EXCLUDED_MONTHS.get(symbol, [])
+    if bad:
+        month = bars.index.tz_convert(None).strftime("%Y-%m")
+        bars = bars[~month.isin(bad)]
+    return bars
 
 
 def local_times(dates, hhmm: str, tz: str) -> pd.DatetimeIndex:
