@@ -1,6 +1,6 @@
 # C1 - Systematic scan of conditional intraday return patterns
 
-**Status:** pre-registered, not yet run.
+**Status:** RUN 2026-10-06 with cost model v1 (constant points): zero candidates; median discovery mean -0.18 sigma, best t 0.48. See research/reports/C1_scan.md. Cost model v1 overstated historical costs (see research/reports/cost_model.md).
 
 ## Why a scan
 A1, A2, B1-B3 showed that individual textbook effects are too weak after CFD costs. The prop
