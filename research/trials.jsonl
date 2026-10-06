@@ -3254,3 +3254,11 @@
 {"timestamp": "2026-10-06T23:21:55.290043+00:00", "hypothesis_id": "B3_v2", "params": {"symbol": "XAUUSD", "period": "IS", "L": 120, "k": 2, "long_only": true}, "n_obs": 195, "sharpe": 0.055095573699015576}
 {"timestamp": "2026-10-06T23:21:57.076225+00:00", "hypothesis_id": "B3_v2", "params": {"symbol": "XAUUSD", "period": "IS", "L": 120, "k": 3, "long_only": false}, "n_obs": 276, "sharpe": 0.007683745965168682}
 {"timestamp": "2026-10-06T23:21:59.035758+00:00", "hypothesis_id": "B3_v2", "params": {"symbol": "XAUUSD", "period": "IS", "L": 120, "k": 3, "long_only": true}, "n_obs": 195, "sharpe": 0.0451057440793809}
+{"timestamp": "2026-10-06T23:46:43.608738+00:00", "hypothesis_id": "D1", "params": {"symbol": "EURUSD", "period": "IS", "window": "US", "H": 2}, "n_obs": 1433, "sharpe": -0.0037051953023248007}
+{"timestamp": "2026-10-06T23:46:49.453155+00:00", "hypothesis_id": "D1", "params": {"symbol": "EURUSD", "period": "IS", "window": "US", "H": 4}, "n_obs": 1433, "sharpe": -0.00826698511915524}
+{"timestamp": "2026-10-06T23:46:55.582760+00:00", "hypothesis_id": "D1", "params": {"symbol": "EURUSD", "period": "IS", "window": "home", "H": 2}, "n_obs": 1431, "sharpe": -0.037019956984762424}
+{"timestamp": "2026-10-06T23:47:01.200942+00:00", "hypothesis_id": "D1", "params": {"symbol": "EURUSD", "period": "IS", "window": "home", "H": 4}, "n_obs": 1431, "sharpe": -0.00036644454523968473}
+{"timestamp": "2026-10-06T23:47:07.314897+00:00", "hypothesis_id": "D1", "params": {"symbol": "GBPUSD", "period": "IS", "window": "US", "H": 2}, "n_obs": 1432, "sharpe": -0.02809480725572204}
+{"timestamp": "2026-10-06T23:47:13.274774+00:00", "hypothesis_id": "D1", "params": {"symbol": "GBPUSD", "period": "IS", "window": "US", "H": 4}, "n_obs": 1432, "sharpe": -0.013114339019099194}
+{"timestamp": "2026-10-06T23:47:19.545989+00:00", "hypothesis_id": "D1", "params": {"symbol": "GBPUSD", "period": "IS", "window": "home", "H": 2}, "n_obs": 1431, "sharpe": -0.02723841070977603}
+{"timestamp": "2026-10-06T23:47:25.392456+00:00", "hypothesis_id": "D1", "params": {"symbol": "GBPUSD", "period": "IS", "window": "home", "H": 4}, "n_obs": 1431, "sharpe": -0.021785995121014236}

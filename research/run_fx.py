@@ -48,6 +48,29 @@ def _cached_vol():
     d2.expected_bar_vol = wrapped
 
 
+def histdata_to_true_utc(bars: pd.DataFrame) -> pd.DataFrame:
+    """Convert HistData stamps to true UTC.
+
+    ``pfbot.data.histdata`` assumes the files are fixed EST (UTC-5, no DST) and adds 5 hours. Checked
+    against Dukascopy M1 candles (EURUSD, USDJPY, US500 on 2016-2019 summer and winter days, and
+    independently by the 08:30 ET data-release spike and the Sunday market open), the stamps are in fact
+    New York wall-clock time *with* US daylight saving: stored stamp = NY wall clock + 5h. During US DST
+    the stored "UTC" index is therefore 1 hour later than true UTC (corr 0.99+ at lag -60 min in summer,
+    lag 0 in winter). Time-of-day hypotheses need true UTC, so the index is rebuilt from the NY wall
+    clock. The weekend hole covers the DST switch hours, so nothing is lost there.
+    """
+    wall = bars.index.tz_convert(None) - pd.Timedelta(hours=5)
+    true = wall.tz_localize("America/New_York", ambiguous="NaT", nonexistent="NaT").tz_convert("UTC")
+    ok = ~pd.isna(true)
+    out = bars[ok].copy()
+    out.index = pd.DatetimeIndex(true[ok], name="time")
+    return out
+
+
+def load_true(symbol: str) -> pd.DataFrame:
+    return histdata_to_true_utc(load_period(symbol, "IS"))
+
+
 def tstat(x) -> float:
     x = np.asarray(x, float)
     if len(x) < 2 or x.std(ddof=1) == 0:
@@ -219,13 +242,13 @@ def run_d2(bars: dict, us500: pd.DataFrame, registry) -> tuple[str, pd.DataFrame
 def main(hyps: list[str], log: bool = True) -> None:
     _cached_vol()
     registry = TrialRegistry() if log else TrialRegistry(Path(tempfile.mkdtemp()) / "trials_dry.jsonl")
-    bars = {s: load_period(s, "IS") for s in PAIRS}
+    bars = {s: load_true(s) for s in PAIRS}
     REPORTS.mkdir(exist_ok=True)
     for h in hyps:
         if h == "D1":
             text, df, pool = run_d1(bars, registry)
         elif h == "D2":
-            text, df, pool = run_d2(bars, load_period("US500", "IS"), registry)
+            text, df, pool = run_d2(bars, load_true("US500"), registry)
         else:
             raise SystemExit(f"unknown hypothesis {h}")
         (REPORTS / f"{h}_IS.md").write_text(text)

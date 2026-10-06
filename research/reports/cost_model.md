@@ -42,3 +42,29 @@ Raw spreads shown in Market Watch (commission and swaps not yet known; firm to b
 | USDCAD | 0 | 1.4212 | 0.00 | 0.6 incl. commission |
 
 Asian-session quotes are usually the widest; NY-session quotes still to be captured.
+
+## Additional measurements (2026-10-07) and the planned v3 model
+The account in the screenshots appears to be a generic MetaTrader demo (no commission column, non-FTMO
+symbol names), so quotes are indicative of the market, not of FTMO itself.
+
+Swaps (USD per 1-lot contract per night, contract = 1 x index or 100k base currency):
+| Symbol | Long | Short | Long, % of notional per year |
+|---|---|---|---|
+| US500 | -0.31 | -0.26 | ~1.4% |
+| USTEC | -0.82 | -0.75 | ~0.9% |
+| EURUSD | -0.7 | -1.0 | ~0.2% |
+Triple swap: Friday for indices, Wednesday for FX.
+
+FTMO published costs (web search 2026-10-07): forex ~3 USD per lot (sources disagree whether per side or round
+turn; assume 6 USD round turn = ~0.5 bp), no commission on indices, metals 0.0014% per side.
+Sources: https://ctrader.com/prop-firms/ftmo, https://propvator.com/blog/?p=2171
+
+**v3 (calibrated, then frozen; to be activated after D1/D2 finish):**
+| Symbol group | Round-trip spread+commission | Slippage per side | Financing |
+|---|---|---|---|
+| US100 | 0.5 bp | 0.1 bp | 2.5%/yr |
+| US500 | 0.7 bp | 0.1 bp | 2.5%/yr |
+| XAUUSD | 1.5 bp (1.2 spread + 0.28 commission) | 0.1 bp | 2.5%/yr |
+| FX majors | 0.8 bp (~0.3 spread + 0.5 commission) | 0.1 bp | 2.5%/yr |
+Each value is at or above the measured quote. After activation the model is not changed again in response to
+results; the only allowed update is replacing it with directly measured FTMO quotes.
