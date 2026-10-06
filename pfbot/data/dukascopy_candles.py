@@ -137,7 +137,7 @@ def build_month(fetcher: PacedFetcher, symbol: str, month: pd.Timestamp, ask_eve
     return bars
 
 
-def download(symbol: str, first_year: int, last_year: int, root: str | Path = "marketdata",
+def download(symbol: str, first_year: int, last_year: int, root: str | Path = "data",
              raw_root: str | Path = "data/raw/dukascopy_candles", newest_first: bool = True) -> None:
     fetcher = PacedFetcher(Path(raw_root))
     months = list(pd.date_range(f"{first_year}-01-01", f"{last_year}-12-01", freq="MS"))
@@ -160,7 +160,7 @@ def download(symbol: str, first_year: int, last_year: int, root: str | Path = "m
 def main(argv=None) -> None:
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("jobs", nargs="+", help="SYMBOL:FIRST-LAST, e.g. US100:2018-2025")
-    ap.add_argument("--root", default="marketdata")
+    ap.add_argument("--root", default="data")
     args = ap.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(message)s")
     for job in args.jobs:

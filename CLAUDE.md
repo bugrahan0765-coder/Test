@@ -56,4 +56,4 @@ Work on branch `ccr-93d9848a-98ftn2` unless told otherwise. Using subagents to t
 - Timeframes: signals on M5/M15; data and fill simulation on M1 (resample with `resample_bars`).
 - Dukascopy rate-limits hard (HTTP 429, ~4-5 s per file effective). Use
   `python -m pfbot.data.dukascopy_candles US100:2018-2025 ...` (daily M1 candle files; ASK sampled
-  every 5th day for a spread estimate). Raw cache in `data/raw` (gitignored), bars in `marketdata/bars`.
+  every 5th day for a spread estimate). Raw cache in `data/raw`, bars in `data/bars` (both gitignored; re-download if the container is fresh).

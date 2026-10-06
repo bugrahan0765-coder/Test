@@ -43,7 +43,8 @@ def save_bars(df: pd.DataFrame, symbol: str, timeframe: str = "1min",
         part.index.name = "time"
         validate_bars(part)
         tmp = path.with_suffix(".parquet.tmp")
-        part.to_parquet(tmp, engine="pyarrow")
+        # float32 + zstd halves the size; rounding is monotonic so OHLC stays consistent.
+        part.astype("float32").to_parquet(tmp, engine="pyarrow", compression="zstd")
         tmp.replace(path)  # atomic-ish: never leave a half-written month file
         written.append(path)
     return written
@@ -65,7 +66,7 @@ def load_bars(symbol: str, timeframe: str = "1min", start=None, end=None,
         empty = pd.DataFrame(columns=cols, dtype="float64",
                              index=pd.DatetimeIndex([], tz="UTC", name="time"))
         return empty
-    df = pd.concat([pd.read_parquet(f) for f in files]).sort_index()
+    df = pd.concat([pd.read_parquet(f) for f in files]).sort_index().astype("float64")
     if df.index.tz is None:
         df.index = df.index.tz_localize("UTC")
     else:
