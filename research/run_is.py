@@ -55,11 +55,11 @@ def main(hyps: list[str]) -> None:
     bars = {s: load_period(s, "IS") for s in SYMBOLS + ["XAUUSD"]}
     for h in hyps:
         fn, configs = HYPS[h]
-        parts = [f"# {h} in-sample results (2015-2020, excluded months removed, cost model v2)", ""]
+        parts = [f"# {h} in-sample results (2015-2020, excluded months removed, cost model v3, true-UTC data)", ""]
         allres = []
         for s in HYP_SYMBOLS.get(h, SYMBOLS):
             t0 = time.time()
-            res, _ = run_grid(h + "_v2", s, "IS", bars[s], fn, configs, spread_mults=(1.0, 1.5))
+            res, _ = run_grid(h + "_v3", s, "IS", bars[s], fn, configs, spread_mults=(1.0, 1.5))
             res.insert(0, "symbol", s)
             allres.append(res)
             parts += [f"## {s} ({time.time() - t0:.0f}s)", "", res[COLS].round(3).to_markdown(index=False), ""]
@@ -67,8 +67,8 @@ def main(hyps: list[str]) -> None:
         base = df[df.spread_mult == 1.0].pivot(index="config", columns="symbol", values=["avg_R", "t_stat", "n"])
         parts += ["## Cross-instrument summary (base costs)", "", base.round(3).to_markdown(), ""]
         REPORTS.mkdir(exist_ok=True)
-        (REPORTS / f"{h}_IS_v2.md").write_text("\n".join(parts))
-        df.to_csv(REPORTS / f"{h}_IS_v2.csv", index=False)
+        (REPORTS / f"{h}_IS_v3.md").write_text("\n".join(parts))
+        df.to_csv(REPORTS / f"{h}_IS_v3.csv", index=False)
         print("\n".join(parts))
 
 

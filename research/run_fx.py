@@ -68,7 +68,8 @@ def histdata_to_true_utc(bars: pd.DataFrame) -> pd.DataFrame:
 
 
 def load_true(symbol: str) -> pd.DataFrame:
-    return histdata_to_true_utc(load_period(symbol, "IS"))
+    # The store is in true UTC since the 2026-10-07 fix in pfbot.data.histdata; no correction here.
+    return load_period(symbol, "IS")
 
 
 def tstat(x) -> float:
@@ -103,7 +104,7 @@ def run_d1(bars: dict, registry) -> tuple[str, pd.DataFrame, pd.DataFrame]:
     allres, trades = [], {}
     for s in PAIRS:
         t0 = time.time()
-        res, tr = run_grid("D1", s, "IS", bars[s], d1.signals, d1.CONFIGS_BY_SYMBOL[s], spread_mults=MULTS,
+        res, tr = run_grid("D1_v3", s, "IS", bars[s], d1.signals, d1.CONFIGS_BY_SYMBOL[s], spread_mults=MULTS,
                            registry=registry)
         res.insert(0, "symbol", s)
         allres.append(res)
@@ -194,7 +195,7 @@ def run_d2(bars: dict, us500: pd.DataFrame, registry) -> tuple[str, pd.DataFrame
         def fn(b, symbol, t_in, _us=us500):
             return d2.signals(b, symbol, t_in, _us)
 
-        res, tr = run_grid("D2", s, "IS", bars[s], fn, configs, spread_mults=MULTS, registry=registry)
+        res, tr = run_grid("D2_v3", s, "IS", bars[s], fn, configs, spread_mults=MULTS, registry=registry)
         res.insert(0, "symbol", s)
         allres.append(res)
         for (key, m), t in tr.items():
@@ -251,9 +252,9 @@ def main(hyps: list[str], log: bool = True) -> None:
             text, df, pool = run_d2(bars, load_true("US500"), registry)
         else:
             raise SystemExit(f"unknown hypothesis {h}")
-        (REPORTS / f"{h}_IS.md").write_text(text)
-        df.to_csv(REPORTS / f"{h}_IS.csv", index=False)
-        pool.to_csv(REPORTS / f"{h}_IS_pooled.csv", index=False)
+        (REPORTS / f"{h}_IS_v3.md").write_text(text)
+        df.to_csv(REPORTS / f"{h}_IS_v3.csv", index=False)
+        pool.to_csv(REPORTS / f"{h}_IS_v3_pooled.csv", index=False)
         print(text)
 
 

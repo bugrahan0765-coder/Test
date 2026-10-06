@@ -58,17 +58,16 @@ EXCLUDED_MONTHS = {
 SLIPPAGE = {"US100": 0.5, "US500": 0.25, "GER40": 0.5, "XAUUSD": 0.10}
 
 
-# Cost model v2 (2026-10-06): costs as a fraction of price, set from current CFD conditions.
+# Cost model v3 (see research/reports/cost_model.md): costs as a fraction of price, calibrated to measured quotes.
 # Spreads quoted in points are roughly constant over time while index levels rose ~5x since 2015, so a
 # constant-point spread (v1) overstated historical costs relative to what the strategy pays today.
 # Values are conservative vs typical FTMO quotes (US100 ~1.5-2 pts at ~25,000 = 0.6-0.8 bp, etc.).
-COST_BPS = {  # full spread, slippage per side; basis points of price
-    "US100": {"spread": 1.0, "slip": 0.2},
-    "US500": {"spread": 1.0, "slip": 0.2},
-    "GER40": {"spread": 1.0, "slip": 0.2},
-    "XAUUSD": {"spread": 1.0, "slip": 0.2},
-    # FX: raw spread + FTMO commission folded into the spread (~0.6 bp round trip), slippage 0.1 bp/side
-    **{fx: {"spread": 0.6, "slip": 0.1} for fx in ("EURUSD", "GBPUSD", "USDJPY", "AUDUSD", "USDCAD", "USDCHF")},
+COST_BPS = {  # cost model v3 (frozen 2026-10-07): round-trip spread+commission, slippage per side; bp of price
+    "US100": {"spread": 0.5, "slip": 0.1},
+    "US500": {"spread": 0.7, "slip": 0.1},
+    "GER40": {"spread": 1.0, "slip": 0.1},  # not measured; GER40 data unusable anyway
+    "XAUUSD": {"spread": 1.5, "slip": 0.1},
+    **{fx: {"spread": 0.8, "slip": 0.1} for fx in ("EURUSD", "GBPUSD", "USDJPY", "AUDUSD", "USDCAD", "USDCHF")},
 }
 
 
@@ -80,7 +79,7 @@ def cost_frac(symbol: str) -> float:
 
 # Assumed CFD overnight financing (FTMO swap), fraction of notional per year, both directions.
 # Conservative placeholder until calibrated against FTMO's published swap table.
-FINANCING_ANNUAL = 0.05
+FINANCING_ANNUAL = 0.025  # v3: measured ~0.2-1.4%/yr long on indices/EURUSD; 2.5% conservative
 
 
 def cost_model(symbol: str, spread_mult: float = 1.0, financing: float = FINANCING_ANNUAL) -> CostModel:

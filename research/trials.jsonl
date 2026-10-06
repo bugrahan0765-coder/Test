@@ -3264,3 +3264,33 @@
 {"timestamp": "2026-10-06T23:47:25.392456+00:00", "hypothesis_id": "D1", "params": {"symbol": "GBPUSD", "period": "IS", "window": "home", "H": 4}, "n_obs": 1431, "sharpe": -0.021785995121014236}
 {"timestamp": "2026-10-06T23:47:31.428918+00:00", "hypothesis_id": "D1", "params": {"symbol": "AUDUSD", "period": "IS", "window": "US", "H": 2}, "n_obs": 1433, "sharpe": -0.0692013675668869}
 {"timestamp": "2026-10-06T23:47:37.340098+00:00", "hypothesis_id": "D1", "params": {"symbol": "AUDUSD", "period": "IS", "window": "US", "H": 4}, "n_obs": 1433, "sharpe": -0.060759213638435394}
+{"timestamp": "2026-10-06T23:47:43.496483+00:00", "hypothesis_id": "D1", "params": {"symbol": "AUDUSD", "period": "IS", "window": "home", "H": 2}, "n_obs": 1327, "sharpe": -0.1101917233567303}
+{"timestamp": "2026-10-06T23:47:48.905193+00:00", "hypothesis_id": "D1", "params": {"symbol": "AUDUSD", "period": "IS", "window": "home", "H": 4}, "n_obs": 1327, "sharpe": -0.061309799269712556}
+{"timestamp": "2026-10-06T23:47:55.038878+00:00", "hypothesis_id": "D1", "params": {"symbol": "USDJPY", "period": "IS", "window": "US", "H": 2}, "n_obs": 1432, "sharpe": -0.024632672629935203}
+{"timestamp": "2026-10-06T23:48:00.863786+00:00", "hypothesis_id": "D1", "params": {"symbol": "USDJPY", "period": "IS", "window": "US", "H": 4}, "n_obs": 1433, "sharpe": 0.0001279866271328216}
+{"timestamp": "2026-10-06T23:48:06.915066+00:00", "hypothesis_id": "D1", "params": {"symbol": "USDJPY", "period": "IS", "window": "home", "H": 2}, "n_obs": 1434, "sharpe": -0.12002835299317448}
+{"timestamp": "2026-10-06T23:48:12.861374+00:00", "hypothesis_id": "D1", "params": {"symbol": "USDJPY", "period": "IS", "window": "home", "H": 4}, "n_obs": 1434, "sharpe": -0.13374698771112056}
+{"timestamp": "2026-10-06T23:48:19.215484+00:00", "hypothesis_id": "D1", "params": {"symbol": "USDCAD", "period": "IS", "window": "US", "H": 2}, "n_obs": 1432, "sharpe": -0.06565930048991726}
+{"timestamp": "2026-10-06T23:48:24.926998+00:00", "hypothesis_id": "D1", "params": {"symbol": "USDCAD", "period": "IS", "window": "US", "H": 4}, "n_obs": 1432, "sharpe": -0.04777176279857666}
+{"timestamp": "2026-10-06T23:48:31.310435+00:00", "hypothesis_id": "D1", "params": {"symbol": "USDCHF", "period": "IS", "window": "US", "H": 2}, "n_obs": 1432, "sharpe": 0.025106997558340192}
+{"timestamp": "2026-10-06T23:48:37.143775+00:00", "hypothesis_id": "D1", "params": {"symbol": "USDCHF", "period": "IS", "window": "US", "H": 4}, "n_obs": 1432, "sharpe": 0.02224933371335564}
+{"timestamp": "2026-10-06T23:48:43.537740+00:00", "hypothesis_id": "D1", "params": {"symbol": "USDCHF", "period": "IS", "window": "home", "H": 2}, "n_obs": 1430, "sharpe": -0.09940854271142012}
+{"timestamp": "2026-10-06T23:48:49.358722+00:00", "hypothesis_id": "D1", "params": {"symbol": "USDCHF", "period": "IS", "window": "home", "H": 4}, "n_obs": 1430, "sharpe": -0.04637899657853512}
+{"timestamp": "2026-10-06T23:49:01.353710+00:00", "hypothesis_id": "D2", "params": {"symbol": "EURUSD", "period": "IS", "t_in": "10:00"}, "n_obs": 53, "sharpe": 0.26886163589806517}
+{"timestamp": "2026-10-06T23:49:02.605220+00:00", "hypothesis_id": "D2", "params": {"symbol": "EURUSD", "period": "IS", "t_in": "12:00"}, "n_obs": 54, "sharpe": 0.21259982675027664}
+{"timestamp": "2026-10-06T23:49:03.755079+00:00", "hypothesis_id": "D2", "params": {"symbol": "EURUSD", "period": "IS", "t_in": "14:00"}, "n_obs": 54, "sharpe": 0.19318778776882212}
+{"timestamp": "2026-10-06T23:49:04.866849+00:00", "hypothesis_id": "D2", "params": {"symbol": "GBPUSD", "period": "IS", "t_in": "10:00"}, "n_obs": 53, "sharpe": 0.46734924299705205}
+{"timestamp": "2026-10-06T23:49:05.857990+00:00", "hypothesis_id": "D2", "params": {"symbol": "GBPUSD", "period": "IS", "t_in": "12:00"}, "n_obs": 54, "sharpe": 0.5250904450430492}
+{"timestamp": "2026-10-06T23:49:06.868476+00:00", "hypothesis_id": "D2", "params": {"symbol": "GBPUSD", "period": "IS", "t_in": "14:00"}, "n_obs": 54, "sharpe": 0.5194269614427868}
+{"timestamp": "2026-10-06T23:49:08.228160+00:00", "hypothesis_id": "D2", "params": {"symbol": "AUDUSD", "period": "IS", "t_in": "10:00"}, "n_obs": 53, "sharpe": 0.25080217122812554}
+{"timestamp": "2026-10-06T23:49:09.319142+00:00", "hypothesis_id": "D2", "params": {"symbol": "AUDUSD", "period": "IS", "t_in": "12:00"}, "n_obs": 54, "sharpe": 0.2015148562296998}
+{"timestamp": "2026-10-06T23:49:10.345706+00:00", "hypothesis_id": "D2", "params": {"symbol": "AUDUSD", "period": "IS", "t_in": "14:00"}, "n_obs": 54, "sharpe": 0.22300150521336534}
+{"timestamp": "2026-10-06T23:49:11.838077+00:00", "hypothesis_id": "D2", "params": {"symbol": "USDJPY", "period": "IS", "t_in": "10:00"}, "n_obs": 53, "sharpe": -0.2791515243242372}
+{"timestamp": "2026-10-06T23:49:12.865964+00:00", "hypothesis_id": "D2", "params": {"symbol": "USDJPY", "period": "IS", "t_in": "12:00"}, "n_obs": 54, "sharpe": -0.3781147248635825}
+{"timestamp": "2026-10-06T23:49:13.862974+00:00", "hypothesis_id": "D2", "params": {"symbol": "USDJPY", "period": "IS", "t_in": "14:00"}, "n_obs": 54, "sharpe": -0.4597320810342075}
+{"timestamp": "2026-10-06T23:49:15.247218+00:00", "hypothesis_id": "D2", "params": {"symbol": "USDCAD", "period": "IS", "t_in": "10:00"}, "n_obs": 53, "sharpe": 0.3023350269795406}
+{"timestamp": "2026-10-06T23:49:16.239663+00:00", "hypothesis_id": "D2", "params": {"symbol": "USDCAD", "period": "IS", "t_in": "12:00"}, "n_obs": 54, "sharpe": 0.22719560229896507}
+{"timestamp": "2026-10-06T23:49:17.261481+00:00", "hypothesis_id": "D2", "params": {"symbol": "USDCAD", "period": "IS", "t_in": "14:00"}, "n_obs": 54, "sharpe": 0.2088795562415711}
+{"timestamp": "2026-10-06T23:49:18.593588+00:00", "hypothesis_id": "D2", "params": {"symbol": "USDCHF", "period": "IS", "t_in": "10:00"}, "n_obs": 53, "sharpe": 0.29069594200299775}
+{"timestamp": "2026-10-06T23:49:19.622399+00:00", "hypothesis_id": "D2", "params": {"symbol": "USDCHF", "period": "IS", "t_in": "12:00"}, "n_obs": 54, "sharpe": 0.303561700094885}
+{"timestamp": "2026-10-06T23:49:20.628408+00:00", "hypothesis_id": "D2", "params": {"symbol": "USDCHF", "period": "IS", "t_in": "14:00"}, "n_obs": 54, "sharpe": 0.3132701333097018}

@@ -502,9 +502,9 @@ def main(argv=None) -> pd.DataFrame:
     args = ap.parse_args(argv)
     global COST_VERSION, HYP_ID
     COST_VERSION = args.cost
-    suffix = "" if args.cost == "v1" else "_v2"
+    suffix = "" if args.cost == "v1" else "_v3"
     if args.cost == "v2":
-        HYP_ID = "C1v2"
+        HYP_ID = "C1v3"
     t0 = time.time()
     slotdata, info = run_scan()
     tab = add_dsr(select_candidates(build_table(slotdata)))
@@ -518,7 +518,7 @@ def main(argv=None) -> pd.DataFrame:
     write_report(tab, info, runtime, logged, REPORTS / f"C1_scan{suffix}.md")
     if args.cost == "v2":
         with open(REPORTS / f"C1_scan{suffix}.md", "a") as f:
-            f.write("\n\n**Cost model v2**: round-trip cost = (spread + 2 x slippage) bps of price from "
+            f.write("\n\n**Cost model v3**: round-trip cost = (spread + 2 x slippage) bps of price from "
                     "`harness.COST_BPS`; the per-point SPREAD/SLIPPAGE figures quoted above do not apply.\n")
     print(f"done in {runtime:.0f}s; candidates: {int(tab['candidate'].sum())}")
     return tab

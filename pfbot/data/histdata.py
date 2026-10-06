@@ -1,6 +1,10 @@
 """HistData.com free M1 bars -> canonical bars (one request per symbol-year).
 
-HistData publishes bid-side M1 OHLC in fixed EST (UTC-5, no daylight saving).
+HistData's documentation says "EST without daylight saving", but the timestamps are New York wall-clock
+time WITH daylight saving (verified 2026-10-07: the 09:30 ET cash-open volatility spike and the 08:30 ET
+data-release spike sit at the same stamped minute in winter and summer; Dukascopy cross-checks match only
+under this reading). We therefore localise to America/New_York and convert to UTC; the repeated hour at the
+autumn transition is dropped.
 There is no spread information, so a conservative constant spread per symbol is
 assumed (SPREAD below; calibrate against FTMO MT5 data later) and
 mid = bid + spread / 2.
@@ -66,7 +70,10 @@ def parse_zip(payload: bytes, symbol: str) -> pd.DataFrame:
         name = next(n for n in z.namelist() if n.endswith(".csv"))
         raw = pd.read_csv(z.open(name), sep=";", header=None,
                           names=["dt", "open", "high", "low", "close", "volume"])
-    t = pd.to_datetime(raw["dt"], format="%Y%m%d %H%M%S") + pd.Timedelta(hours=5)  # EST -> UTC
+    local = pd.to_datetime(raw["dt"], format="%Y%m%d %H%M%S")
+    t = pd.DatetimeIndex(local).tz_localize("America/New_York", ambiguous="NaT", nonexistent="NaT")
+    keep = ~t.isna()
+    raw, t = raw[keep], t[keep].tz_convert("UTC").tz_localize(None)
     spread = SPREAD[symbol]
     df = pd.DataFrame({c: raw[c].to_numpy(float) + spread / 2 for c in ("open", "high", "low", "close")},
                       index=pd.DatetimeIndex(t, name="time").tz_localize("UTC"))

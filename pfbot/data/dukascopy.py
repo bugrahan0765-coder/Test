@@ -49,6 +49,9 @@ SYMBOLS: dict[str, tuple[str, float]] = {
     "EURUSD": ("EURUSD", 1e5),
     "GBPUSD": ("GBPUSD", 1e5),
     "USDJPY": ("USDJPY", 1e3),
+    "AUDUSD": ("AUDUSD", 1e5),
+    "USDCAD": ("USDCAD", 1e5),
+    "USDCHF": ("USDCHF", 1e5),
 }
 
 # Plausible median-close ranges over 2003..~2026 (deliberately wide; they only
