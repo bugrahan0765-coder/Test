@@ -44,3 +44,16 @@ They have some programming knowledge. Be honest about odds; never promise profit
 4. Later: calibrate costs against FTMO MT5 data (user will provide exports from an FTMO Free Trial account).
 
 Work on branch `ccr-93d9848a-98ftn2` unless told otherwise. Using subagents to test hypotheses in parallel is approved by the user.
+
+## Subagent model policy (user's instruction: be cost-aware, but use Opus where it matters)
+- Sonnet (or Haiku for purely mechanical work): data downloads, file plumbing, report tables,
+  simple tests, coding a hypothesis from an already-written spec.
+- Opus: strategy design, statistical interpretation, overfitting/look-ahead audits, risk manager,
+  live-trading code.
+- The main session reviews every subagent result before it is trusted or committed.
+
+## Data
+- Timeframes: signals on M5/M15; data and fill simulation on M1 (resample with `resample_bars`).
+- Dukascopy rate-limits hard (HTTP 429, ~4-5 s per file effective). Use
+  `python -m pfbot.data.dukascopy_candles US100:2018-2025 ...` (daily M1 candle files; ASK sampled
+  every 5th day for a spread estimate). Raw cache in `data/raw` (gitignored), bars in `marketdata/bars`.
