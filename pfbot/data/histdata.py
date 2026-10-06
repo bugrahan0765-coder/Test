@@ -26,11 +26,15 @@ from pfbot.data.store import save_bars
 
 log = logging.getLogger(__name__)
 
-PAIRS = {"US100": "NSXUSD", "US500": "SPXUSD", "GER40": "GRXEUR", "XAUUSD": "XAUUSD"}
+PAIRS = {"US100": "NSXUSD", "US500": "SPXUSD", "GER40": "GRXEUR", "XAUUSD": "XAUUSD",
+         "EURUSD": "EURUSD", "GBPUSD": "GBPUSD", "USDJPY": "USDJPY", "AUDUSD": "AUDUSD",
+         "USDCAD": "USDCAD", "USDCHF": "USDCHF"}
 
 # Assumed full spread in price units (conservative vs. typical FTMO quotes; Dukascopy
 # US100 samples showed medians of 1.2-2.9 points).
-SPREAD = {"US100": 2.0, "US500": 0.6, "GER40": 1.5, "XAUUSD": 0.30}
+SPREAD = {"US100": 2.0, "US500": 0.6, "GER40": 1.5, "XAUUSD": 0.30,
+          "EURUSD": 0.00006, "GBPUSD": 0.00009, "USDJPY": 0.008, "AUDUSD": 0.00007,
+          "USDCAD": 0.00009, "USDCHF": 0.00009}
 
 PAGE = "https://www.histdata.com/download-free-forex-historical-data/?/ascii/1-minute-bar-quotes/{pair}/{year}"
 GET = "https://www.histdata.com/get.php"

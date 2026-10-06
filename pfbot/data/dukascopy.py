@@ -61,6 +61,9 @@ PRICE_RANGES: dict[str, tuple[float, float]] = {
     "EURUSD": (0.7, 1.7),
     "GBPUSD": (1.0, 2.2),
     "USDJPY": (70, 200),
+    "AUDUSD": (0.5, 1.2),
+    "USDCAD": (0.9, 1.6),
+    "USDCHF": (0.7, 1.2),
 }
 
 _TICK_DTYPE = np.dtype([("ms", ">u4"), ("ask", ">u4"), ("bid", ">u4"),

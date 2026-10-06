@@ -50,6 +50,7 @@ EXCLUDED_MONTHS = {
     "US100": _BAD_2023,
     "US500": ["2016-08", "2017-05", "2017-07", "2017-09", "2017-10", "2017-11"] + _BAD_2023,
     "XAUUSD": _BAD_2023,
+    **{fx: ["2023-02"] + _BAD_2023 for fx in ("EURUSD", "GBPUSD", "USDJPY", "AUDUSD", "USDCAD", "USDCHF")},
     "GER40": [f"{y}-{m:02d}" for y in range(2015, 2019) for m in range(1, 13)]
     + ["2020-12"] + [f"{y}-{m:02d}" for y in (2021, 2022, 2023) for m in range(1, 13)],
 }
@@ -66,6 +67,8 @@ COST_BPS = {  # full spread, slippage per side; basis points of price
     "US500": {"spread": 1.0, "slip": 0.2},
     "GER40": {"spread": 1.0, "slip": 0.2},
     "XAUUSD": {"spread": 1.0, "slip": 0.2},
+    # FX: raw spread + FTMO commission folded into the spread (~0.6 bp round trip), slippage 0.1 bp/side
+    **{fx: {"spread": 0.6, "slip": 0.1} for fx in ("EURUSD", "GBPUSD", "USDJPY", "AUDUSD", "USDCAD", "USDCHF")},
 }
 
 
