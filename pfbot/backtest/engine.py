@@ -50,6 +50,8 @@ class CostModel:
     min_spread: float = 0.0
     slippage: float = 0.0  # price units, on market/stop entries and stop/time exits
     commission_frac: float = 0.0  # fraction of price, charged per side
+    financing_annual: float = 0.0  # CFD swap: fraction of notional per year, charged per night held
+    rollover_tz: str = "America/New_York"  # nights are counted at the 17:00 rollover in this zone
 
 
 @numba.njit(cache=True)
@@ -136,6 +138,12 @@ def _col(sig: pd.DataFrame, name: str, default=np.nan) -> np.ndarray:
     return np.full(len(sig), default, dtype=object if isinstance(default, str) else float)
 
 
+def _nights(entry: pd.Timestamp, exit_: pd.Timestamp, tz: str) -> int:
+    """Calendar nights between entry and exit, counted at the 17:00 rollover (weekend = 3)."""
+    roll = lambda t: (t.tz_convert(tz) - pd.Timedelta(hours=17)).normalize()
+    return int((roll(exit_) - roll(entry)).days)
+
+
 def run_backtest(
     bars: pd.DataFrame,
     signals: pd.DataFrame,
@@ -201,6 +209,8 @@ def run_backtest(
         if not filled:
             continue
         comm = costs.commission_frac * (epx + xpx)
+        if costs.financing_annual:
+            comm += costs.financing_annual / 360.0 * epx * _nights(idx[ei], idx[xi], costs.rollover_tz)
         pnl = side * (xpx - epx) - comm
         rows.append(
             dict(

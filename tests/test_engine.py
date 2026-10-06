@@ -128,3 +128,12 @@ def test_injected_edge_is_recovered():
     ))
     st = summarize(run_backtest(bars, s, CostModel()))
     assert st["n"] == 200 and st["t_stat"] > 3.0
+
+
+def test_financing_charged_per_night():
+    idx = pd.DatetimeIndex(["2024-01-05 20:00", "2024-01-05 20:01", "2024-01-08 15:00", "2024-01-08 15:01"],
+                           tz="UTC", name="time")  # Friday 15:00 ET -> Monday 10:00 ET: 3 nights
+    b = pd.DataFrame({"open": 100.0, "high": 100.5, "low": 99.5, "close": 100.0}, index=idx)
+    s = pd.DataFrame([dict(time=idx[0], side=1, stop_dist=5.0, exit_time=idx[2])])
+    t = run_backtest(b, s, CostModel(financing_annual=0.036))
+    assert t.iloc[0].pnl == pytest.approx(-100 * 0.036 / 360 * 3)

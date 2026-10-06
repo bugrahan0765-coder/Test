@@ -57,8 +57,13 @@ EXCLUDED_MONTHS = {
 SLIPPAGE = {"US100": 0.5, "US500": 0.25, "GER40": 0.5, "XAUUSD": 0.10}
 
 
-def cost_model(symbol: str, spread_mult: float = 1.0) -> CostModel:
-    return CostModel(spread_mult=spread_mult, slippage=SLIPPAGE.get(symbol, 0.0))
+# Assumed CFD overnight financing (FTMO swap), fraction of notional per year, both directions.
+# Conservative placeholder until calibrated against FTMO's published swap table.
+FINANCING_ANNUAL = 0.05
+
+
+def cost_model(symbol: str, spread_mult: float = 1.0, financing: float = FINANCING_ANNUAL) -> CostModel:
+    return CostModel(spread_mult=spread_mult, slippage=SLIPPAGE.get(symbol, 0.0), financing_annual=financing)
 
 
 def load_period(symbol: str, period: str, unlock: bool = False, root: Path = DATA_ROOT) -> pd.DataFrame:
