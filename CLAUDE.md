@@ -54,6 +54,9 @@ Work on branch `ccr-93d9848a-98ftn2` unless told otherwise. Using subagents to t
 
 ## Data
 - Timeframes: signals on M5/M15; data and fill simulation on M1 (resample with `resample_bars`).
-- Dukascopy rate-limits hard (HTTP 429, ~4-5 s per file effective). Use
-  `python -m pfbot.data.dukascopy_candles US100:2018-2025 ...` (daily M1 candle files; ASK sampled
-  every 5th day for a spread estimate). Raw cache in `data/raw`, bars in `data/bars` (both gitignored; re-download if the container is fresh).
+- Primary source: HistData.com (`python -m pfbot.data.histdata US100:2015-2025 ...`), one request per
+  symbol-year, bid M1 in fixed EST converted to UTC, constant conservative spread per symbol (SPREAD in
+  histdata.py) until calibrated against FTMO MT5 data. Bars in `data/bars` (gitignored; re-download in a
+  fresh container, takes a few minutes).
+- Dukascopy (`pfbot.data.dukascopy_candles`) works but this cloud egress gets rate-limited/blocked (HTTP 429)
+  after a few hundred requests; only a few months were fetched (kept in data/bars_dukascopy for spread reference).

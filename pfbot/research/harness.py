@@ -68,8 +68,9 @@ def local_times(dates, hhmm: str, tz: str) -> pd.DatetimeIndex:
 def session_dates(bars: pd.DataFrame, session: Session) -> pd.DatetimeIndex:
     """Local dates on which the session had a bar at its open minute."""
     local = bars.index.tz_convert(session.tz)
-    hhmm = local.strftime("%H:%M")
-    return pd.DatetimeIndex(local[hhmm == session.open].normalize().tz_localize(None)).unique()
+    open_min = int(session.open[:2]) * 60 + int(session.open[3:])
+    at_open = (local.hour * 60 + local.minute) == open_min
+    return pd.DatetimeIndex(local[at_open].normalize().tz_localize(None)).unique()
 
 
 def price_at(bars: pd.DataFrame, times: pd.DatetimeIndex, field: str = "close") -> np.ndarray:

@@ -16,7 +16,7 @@ BASE = dict(symbol="US100", z=0.0, k=1.5, confirm=False)
 
 @pytest.fixture(scope="module", autouse=True)
 def _memo_expected_vol():
-    """Memoise the (slow) vol forecast across tests; the key includes the price content so a
+    """Memoise the slow vol forecast / session dates across tests; the key includes the price content so a
     corrupted copy of the bars is never served a cached forecast."""
     real, cache = a1.expected_bar_vol, {}
 
@@ -26,8 +26,17 @@ def _memo_expected_vol():
             cache[key] = real(b, **kw)
         return cache[key]
 
+    real_sd, sd_cache = a1.session_dates, {}
+
+    def memo_sd(b, sess):  # harness.session_dates formats every M1 timestamp: ~4 s per call here
+        key = (sess, len(b), b.index[0], b.index[-1], b.index[len(b) // 2])
+        if key not in sd_cache:
+            sd_cache[key] = real_sd(b, sess)
+        return sd_cache[key]
+
     mp = pytest.MonkeyPatch()
     mp.setattr(a1, "expected_bar_vol", memo)
+    mp.setattr(a1, "session_dates", memo_sd)
     yield
     mp.undo()
 
