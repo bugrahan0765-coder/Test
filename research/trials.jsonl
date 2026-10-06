@@ -3262,3 +3262,5 @@
 {"timestamp": "2026-10-06T23:47:13.274774+00:00", "hypothesis_id": "D1", "params": {"symbol": "GBPUSD", "period": "IS", "window": "US", "H": 4}, "n_obs": 1432, "sharpe": -0.013114339019099194}
 {"timestamp": "2026-10-06T23:47:19.545989+00:00", "hypothesis_id": "D1", "params": {"symbol": "GBPUSD", "period": "IS", "window": "home", "H": 2}, "n_obs": 1431, "sharpe": -0.02723841070977603}
 {"timestamp": "2026-10-06T23:47:25.392456+00:00", "hypothesis_id": "D1", "params": {"symbol": "GBPUSD", "period": "IS", "window": "home", "H": 4}, "n_obs": 1431, "sharpe": -0.021785995121014236}
+{"timestamp": "2026-10-06T23:47:31.428918+00:00", "hypothesis_id": "D1", "params": {"symbol": "AUDUSD", "period": "IS", "window": "US", "H": 2}, "n_obs": 1433, "sharpe": -0.0692013675668869}
+{"timestamp": "2026-10-06T23:47:37.340098+00:00", "hypothesis_id": "D1", "params": {"symbol": "AUDUSD", "period": "IS", "window": "US", "H": 4}, "n_obs": 1433, "sharpe": -0.060759213638435394}
