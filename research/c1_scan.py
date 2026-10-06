@@ -41,11 +41,12 @@ from scipy import stats as sps
 from pfbot.data.histdata import SPREAD
 from pfbot.data.schema import resample_bars
 from pfbot.features.volatility import expected_bar_vol
-from pfbot.research.harness import SLIPPAGE, load_period, local_times
+from pfbot.research.harness import SLIPPAGE, cost_frac, load_period, local_times
 from pfbot.stats.performance import TrialRegistry, deflated_sharpe_ratio
 
 NY = "America/New_York"
 HYP_ID = "C1"
+COST_VERSION = "v1"  # "v2": relative costs from harness.COST_BPS
 SYMBOLS = ["US100", "US500", "XAUUSD"]
 SISTER = {"US100": "US500", "US500": "US100"}
 HS = (60, 120, 240)
@@ -148,6 +149,7 @@ class SlotData:
     cost: float              # price units: SPREAD + 2 * SLIPPAGE
     x_day: np.ndarray
     x_recent: np.ndarray
+    cost_frac: float | None = None  # cost model v2: round-trip cost as a fraction of price
 
     @property
     def logret(self) -> np.ndarray:
@@ -157,6 +159,8 @@ class SlotData:
     @property
     def cost_log(self) -> np.ndarray:
         with np.errstate(invalid="ignore", divide="ignore"):
+            if self.cost_frac is not None:
+                return np.full(self.entry.shape, self.cost_frac)
             return self.cost / self.entry
 
 
@@ -170,6 +174,7 @@ def scan_instrument(grid: Grid, dates: pd.DatetimeIndex, symbol: str,
                     slots=SLOT_MINUTES, hs=HS) -> dict[tuple[str, int], SlotData]:
     """Per (slot label, H): SlotData for all ``dates``. Pure function of data known by each instant."""
     cost = float(SPREAD[symbol] + 2.0 * SLIPPAGE[symbol])
+    cfrac = cost_frac(symbol) if COST_VERSION == "v2" else None
     N = len(dates)
 
     # previous 16:00 close per date (nearest earlier weekday with a price, <= 4 calendar days back)
@@ -197,7 +202,7 @@ def scan_instrument(grid: Grid, dates: pd.DatetimeIndex, symbol: str,
             nb = H // 5
             nan = np.full(N, np.nan)
             if sm + H > CLOSE_MIN:
-                out[(label, H)] = SlotData(symbol, label, H, dates, np.zeros(N, bool), nan, nan, nan, cost, nan, nan)
+                out[(label, H)] = SlotData(symbol, label, H, dates, np.zeros(N, bool), nan, nan, nan, cost, nan, nan, cfrac)
                 continue
             pos_e, v_e = grid.pos(local_times(dates, hhmm(sm + H), NY))
             v = v_t & v_e & (pos_e - pos_t == nb)
@@ -214,7 +219,7 @@ def scan_instrument(grid: Grid, dates: pd.DatetimeIndex, symbol: str,
             with np.errstate(invalid="ignore", divide="ignore"):
                 x_rec = np.where(good_r, np.log(entry / p_h) / np.sqrt(np.where(var_r > 0, var_r, np.nan)), np.nan)
             out[(label, H)] = SlotData(symbol, label, H, dates, ok, entry, exit_, sigma, cost,
-                                       x_day, np.where(np.isfinite(x_rec), x_rec, np.nan))
+                                       x_day, np.where(np.isfinite(x_rec), x_rec, np.nan), cfrac)
     return out
 
 
@@ -493,7 +498,13 @@ Share of configs with a positive discovery mean: {n_pos}/{n_eff}.
 def main(argv=None) -> pd.DataFrame:
     ap = argparse.ArgumentParser()
     ap.add_argument("--no-log", action="store_true", help="do not append to research/trials.jsonl (development)")
+    ap.add_argument("--cost", choices=["v1", "v2"], default="v1", help="cost model (v2 = relative, see harness)")
     args = ap.parse_args(argv)
+    global COST_VERSION, HYP_ID
+    COST_VERSION = args.cost
+    suffix = "" if args.cost == "v1" else "_v2"
+    if args.cost == "v2":
+        HYP_ID = "C1v2"
     t0 = time.time()
     slotdata, info = run_scan()
     tab = add_dsr(select_candidates(build_table(slotdata)))
@@ -502,10 +513,14 @@ def main(argv=None) -> pd.DataFrame:
     if not args.no_log:
         logged = log_trials(tab, TrialRegistry())
     REPORTS.mkdir(parents=True, exist_ok=True)
-    tab.to_csv(REPORTS / "C1_scan.csv", index=False)
+    tab.to_csv(REPORTS / f"C1_scan{suffix}.csv", index=False)
     runtime = time.time() - t0
-    write_report(tab, info, runtime, logged, REPORTS / "C1_scan.md")
-    print(f"done in {runtime:.0f}s; candidates: {int(tab['candidate'].sum())}; report: {REPORTS / 'C1_scan.md'}")
+    write_report(tab, info, runtime, logged, REPORTS / f"C1_scan{suffix}.md")
+    if args.cost == "v2":
+        with open(REPORTS / f"C1_scan{suffix}.md", "a") as f:
+            f.write("\n\n**Cost model v2**: round-trip cost = (spread + 2 x slippage) bps of price from "
+                    "`harness.COST_BPS`; the per-point SPREAD/SLIPPAGE figures quoted above do not apply.\n")
+    print(f"done in {runtime:.0f}s; candidates: {int(tab['candidate'].sum())}")
     return tab
 
 

@@ -57,13 +57,32 @@ EXCLUDED_MONTHS = {
 SLIPPAGE = {"US100": 0.5, "US500": 0.25, "GER40": 0.5, "XAUUSD": 0.10}
 
 
+# Cost model v2 (2026-10-06): costs as a fraction of price, set from current CFD conditions.
+# Spreads quoted in points are roughly constant over time while index levels rose ~5x since 2015, so a
+# constant-point spread (v1) overstated historical costs relative to what the strategy pays today.
+# Values are conservative vs typical FTMO quotes (US100 ~1.5-2 pts at ~25,000 = 0.6-0.8 bp, etc.).
+COST_BPS = {  # full spread, slippage per side; basis points of price
+    "US100": {"spread": 1.0, "slip": 0.2},
+    "US500": {"spread": 1.0, "slip": 0.2},
+    "GER40": {"spread": 1.0, "slip": 0.2},
+    "XAUUSD": {"spread": 1.0, "slip": 0.2},
+}
+
+
+def cost_frac(symbol: str) -> float:
+    """Round-trip cost (spread + 2 x slippage) as a fraction of price."""
+    c = COST_BPS[symbol]
+    return (c["spread"] + 2 * c["slip"]) / 1e4
+
+
 # Assumed CFD overnight financing (FTMO swap), fraction of notional per year, both directions.
 # Conservative placeholder until calibrated against FTMO's published swap table.
 FINANCING_ANNUAL = 0.05
 
 
 def cost_model(symbol: str, spread_mult: float = 1.0, financing: float = FINANCING_ANNUAL) -> CostModel:
-    return CostModel(spread_mult=spread_mult, slippage=SLIPPAGE.get(symbol, 0.0), financing_annual=financing)
+    return CostModel(spread_mult=spread_mult, slippage_frac=COST_BPS[symbol]["slip"] / 1e4,
+                     financing_annual=financing)
 
 
 def load_period(symbol: str, period: str, unlock: bool = False, root: Path = DATA_ROOT) -> pd.DataFrame:
@@ -72,6 +91,7 @@ def load_period(symbol: str, period: str, unlock: bool = False, root: Path = DAT
         raise PermissionError("the locked test period is opened only once, for the final portfolio")
     start, end = PERIODS[period]
     bars = load_bars(symbol, "1min", start=start, end=end, root=root)
+    bars["spread"] = bars["close"] * COST_BPS[symbol]["spread"] / 1e4  # cost model v2
     bad = EXCLUDED_MONTHS.get(symbol, [])
     if bad:
         month = bars.index.tz_convert(None).strftime("%Y-%m")

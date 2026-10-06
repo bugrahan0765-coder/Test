@@ -49,6 +49,7 @@ class CostModel:
     spread_mult: float = 1.0  # stress-test multiplier on the spread
     min_spread: float = 0.0
     slippage: float = 0.0  # price units, on market/stop entries and stop/time exits
+    slippage_frac: float = 0.0  # additional slippage as a fraction of price
     commission_frac: float = 0.0  # fraction of price, charged per side
     financing_annual: float = 0.0  # CFD swap: fraction of notional per year, charged per night held
     rollover_tz: str = "America/New_York"  # nights are counted at the 17:00 rollover in this zone
@@ -202,7 +203,8 @@ def run_backtest(
 
         res = _simulate(
             o, h, l, c, spr, i0, side, otype, trig if otype else 0.0,
-            to_idx(expiry[r]), stop, target, to_idx(exit_t[r]), costs.slippage,
+            to_idx(expiry[r]), stop, target, to_idx(exit_t[r]),
+            costs.slippage + costs.slippage_frac * c[max(i0 - 1, 0)],
         )
         filled, ei, epx, xi, xpx, reason, mae, mfe, end_i = res
         busy_until = end_i
