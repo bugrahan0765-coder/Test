@@ -1,6 +1,9 @@
 # B1 - Turn-of-the-month effect in equity indices
 
-**Status:** pre-registered, not yet tested.
+**Status:** NOT PASSED in-sample (2026-10-06), weak positive. 6 of 8 configs positive on both instruments;
+best d_in=-1,d_out=3,k=2: US100 +0.096 R (t 1.55), US500 +0.096 R (t 1.26), ~60 trades each. The pre-registered
+bar (t > 1.5 on both) is missed on US500. Kept on a watch list as a candidate portfolio component; any reuse
+must count these 16 trials. See research/reports/B1_IS.md.
 
 ## Mechanism
 Equity index returns concentrate in the window from the last trading day of a month to the first

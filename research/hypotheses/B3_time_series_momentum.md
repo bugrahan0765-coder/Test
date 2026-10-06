@@ -1,6 +1,7 @@
 # B3 - Time-series momentum (trend following), weekly rebalanced
 
-**Status:** pre-registered, not yet tested.
+**Status:** REJECTED in-sample (2026-10-06). No configuration has t > 1.5 on two instruments; best
+L=20 long-only on US100 (+0.05 R, t 1.55) but ~0 on US500 and negative on XAUUSD. See research/reports/B3_IS.md.
 
 ## Mechanism
 An asset's own past 1-12 month return predicts its next-month return, across equity indices,

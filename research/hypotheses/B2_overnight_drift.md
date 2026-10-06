@@ -1,6 +1,7 @@
 # B2 - Overnight drift (close-to-open) in equity indices
 
-**Status:** pre-registered, not yet tested.
+**Status:** REJECTED in-sample (2026-10-06). All configs slightly negative after spread + 5% financing
+(US100 -0.006..-0.013 R, US500 -0.017..-0.025 R). See research/reports/B2_IS.md.
 
 ## Mechanism
 A large share of the US equity premium has historically been earned outside cash-session hours

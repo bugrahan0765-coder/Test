@@ -13,6 +13,9 @@ import pandas as pd
 
 import pfbot.strategies.a1_intraday_momentum as a1
 import pfbot.strategies.a2_opening_range as a2
+import pfbot.strategies.b1_turn_of_month as b1
+import pfbot.strategies.b2_overnight_drift as b2
+import pfbot.strategies.b3_tsmom as b3
 from pfbot.features import volatility
 from pfbot.research.harness import SESSIONS, load_period, run_grid
 
@@ -38,19 +41,23 @@ def _cached_vol():
 HYPS = {
     "A1": (a1.signals, a1.CONFIGS),
     "A2": (a2.signals, a2.CONFIGS),
+    "B1": (b1.signals, b1.CONFIGS),
+    "B2": (b2.signals, b2.CONFIGS),
+    "B3": (b3.signals, b3.CONFIGS),
 }
+HYP_SYMBOLS = {"B3": ["US100", "US500", "XAUUSD"]}
 
 COLS = ["config", "spread_mult", "n", "win_rate", "avg_R", "t_stat", "profit_factor", "total_R", "worst_mae_R"]
 
 
 def main(hyps: list[str]) -> None:
     _cached_vol()
-    bars = {s: load_period(s, "IS") for s in SYMBOLS}
+    bars = {s: load_period(s, "IS") for s in SYMBOLS + ["XAUUSD"]}
     for h in hyps:
         fn, configs = HYPS[h]
         parts = [f"# {h} in-sample results (2015-2020, excluded months removed)", ""]
         allres = []
-        for s in SYMBOLS:
+        for s in HYP_SYMBOLS.get(h, SYMBOLS):
             t0 = time.time()
             res, _ = run_grid(h, s, "IS", bars[s], fn, configs, spread_mults=(1.0, 1.5))
             res.insert(0, "symbol", s)
