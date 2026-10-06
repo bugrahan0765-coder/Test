@@ -1,6 +1,8 @@
 # A1 - Market intraday momentum (last half hour)
 
-**Status:** pre-registered, not yet tested.
+**Status:** REJECTED in-sample (2026-10-06). All 12 configs negative on US100 and US500 after costs
+(mean R -0.05 to -0.17, t-stats -1.3 to -8.9). Zero-cost raw edge is in the predicted direction but tiny
+(+0.01..+0.03 R, t about 1), smaller than one spread (~0.1 R). See research/reports/A1_IS.md.
 
 ## Mechanism
 Gao, Han, Li, Zhou (2018, JFE): the S&P 500 ETF return from the previous close to 10:00 ET

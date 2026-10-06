@@ -1,6 +1,9 @@
 # A2 - Opening range momentum (first N minutes of the cash session)
 
-**Status:** pre-registered, not yet tested.
+**Status:** REJECTED in-sample (2026-10-06). All 12 configs negative on US100 and US500 after costs
+(mean R -0.17 to -0.58). Zero-cost check (US100, N=15, no target, 2019-2020): +0.10 R, t = 0.6, not significant.
+Opening ranges are narrow (stop ~8 US100 points) so spread + slippage cost 25-40% of the risk.
+See research/reports/A2_IS.md.
 
 ## Mechanism
 Orders that accumulate overnight are executed at the cash open; the direction of the opening
