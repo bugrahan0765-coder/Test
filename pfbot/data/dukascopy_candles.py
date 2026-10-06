@@ -17,7 +17,9 @@ from __future__ import annotations
 import argparse
 import logging
 import lzma
+import threading
 import time
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import numpy as np
@@ -53,13 +55,32 @@ def decode_candles(payload: bytes, day: pd.Timestamp, point: float) -> pd.DataFr
 
 
 class PacedFetcher:
-    """Single-threaded fetcher that backs off on 429s and survives dropped tunnels."""
+    """Thread-safe fetcher that backs off on 429s and survives dropped tunnels."""
 
-    def __init__(self, raw_root: Path, max_attempts: int = 12):
+    def __init__(self, raw_root: Path, max_attempts: int = 12, workers: int = 6):
         self.raw_root = Path(raw_root)
         self.max_attempts = max_attempts
-        self.session = requests.Session()
+        self.workers = workers
+        self._local = threading.local()
         self.stats = {"ok": 0, "cached": 0, "empty": 0, "429": 0, "errors": 0}
+
+    @property
+    def session(self) -> requests.Session:
+        if getattr(self._local, "s", None) is None:
+            self._local.s = requests.Session()
+        return self._local.s
+
+    def prefetch(self, items) -> None:
+        """Download (code, side, day) items in parallel into the cache."""
+        todo = [it for it in items if not self.path(*it).exists()]
+        def one(it):
+            try:
+                self.get(*it)
+            except RuntimeError as e:  # leave it uncached; the month is retried later
+                log.warning("%s", e)
+
+        with ThreadPoolExecutor(self.workers) as pool:
+            list(pool.map(one, todo))
 
     def path(self, code: str, side: str, day: pd.Timestamp) -> Path:
         return self.raw_root / code / side / f"{day.year}" / f"{day.month - 1:02d}" / f"{day.day:02d}.bi5"
@@ -76,7 +97,7 @@ class PacedFetcher:
                 r = self.session.get(url, timeout=30)
             except requests.RequestException:
                 self.stats["errors"] += 1
-                self.session = requests.Session()
+                self._local.s = requests.Session()
                 time.sleep(wait)
                 wait = min(wait * 2, 60)
                 continue
@@ -99,6 +120,10 @@ class PacedFetcher:
         raise RuntimeError(f"giving up on {url}")
 
 
+class IncompleteMonth(RuntimeError):
+    pass
+
+
 def spread_profile(samples: pd.Series) -> pd.Series:
     """Median spread per 30-minute UTC bucket (minutes since midnight)."""
     bucket = samples.index.hour * 60 + (samples.index.minute // 30) * 30
@@ -109,6 +134,11 @@ def build_month(fetcher: PacedFetcher, symbol: str, month: pd.Timestamp, ask_eve
     code, point = SYMBOLS[symbol]
     days = pd.date_range(month, month + pd.offsets.MonthEnd(0), freq="D")
     days = [d for d in days if d.dayofweek != 5 and d < pd.Timestamp.now().normalize()]
+    items = [(code, "BID", d) for d in days] + [(code, "ASK", d) for d in days if d.dayofyear % ask_every == 0]
+    fetcher.prefetch(items)
+    missing = [it for it in items if not fetcher.path(*it).exists()]
+    if missing:
+        raise IncompleteMonth(f"{symbol} {month:%Y-%m}: {len(missing)} files still missing")
     bids, spreads = [], []
     for i, d in enumerate(days):
         bid = decode_candles(fetcher.get(code, "BID", d), d, point)
@@ -138,8 +168,20 @@ def build_month(fetcher: PacedFetcher, symbol: str, month: pd.Timestamp, ask_eve
 
 
 def download(symbol: str, first_year: int, last_year: int, root: str | Path = "data",
-             raw_root: str | Path = "data/raw/dukascopy_candles", newest_first: bool = True) -> None:
-    fetcher = PacedFetcher(Path(raw_root))
+             raw_root: str | Path = "data/raw/dukascopy_candles", newest_first: bool = True,
+             passes: int = 5, workers: int = 8) -> None:
+    """Download whole months; months with missing files are retried in later passes."""
+    for p in range(passes):
+        failed = _download_pass(symbol, first_year, last_year, root, raw_root, newest_first, workers)
+        if not failed:
+            return
+        log.warning("%s pass %d: %d incomplete months, retrying", symbol, p + 1, failed)
+    log.error("%s: gave up with incomplete months", symbol)
+
+
+def _download_pass(symbol, first_year, last_year, root, raw_root, newest_first, workers) -> int:
+    fetcher = PacedFetcher(Path(raw_root), workers=workers)
+    failed = 0
     months = list(pd.date_range(f"{first_year}-01-01", f"{last_year}-12-01", freq="MS"))
     months = [m for m in months if m < pd.Timestamp.now()]
     done_dir = Path(root) / "bars" / symbol / "1min"
@@ -148,13 +190,19 @@ def download(symbol: str, first_year: int, last_year: int, root: str | Path = "d
         if target.exists() and m + pd.offsets.MonthEnd(0) < pd.Timestamp.now() - pd.Timedelta(days=2):
             continue
         t0 = time.time()
-        bars = build_month(fetcher, symbol, m)
+        try:
+            bars = build_month(fetcher, symbol, m)
+        except IncompleteMonth as e:
+            log.warning("%s", e)
+            failed += 1
+            continue
         if bars.empty:
             log.info("%s %s: no data", symbol, f"{m:%Y-%m}")
             continue
         save_bars(bars, symbol, "1min", root=Path(root) / "bars")
         log.info("%s %s: %d bars, median spread %.3g, %.0fs, %s", symbol, f"{m:%Y-%m}", len(bars),
                  bars["spread"].median(), time.time() - t0, fetcher.stats)
+    return failed
 
 
 def main(argv=None) -> None:
