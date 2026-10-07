@@ -35,13 +35,13 @@ They have some programming knowledge. Be honest about odds; never promise profit
 - Dependencies: numpy, pandas>=3, pyarrow, scipy, statsmodels, numba, requests, pytest
   (`pip install numpy pandas pyarrow scipy statsmodels numba requests pytest`).
 
-## Status / next steps
-1. DONE: plan, data layer, backtest engine, prop simulator, volatility/regime/stats modules (tested on synthetic data only).
-2. NEXT: download 2015-2025 M1 for US100, US500, GER40, XAUUSD from Dukascopy (needs network access to
-   datafeed.dukascopy.com); verify price levels and spreads; write a data-quality report.
-3. Then: hypotheses A1 (intraday momentum) and A2 (opening range breakout) on US100/US500 per the protocol,
-   then the rest of section 2.2-A, then the FTMO Monte Carlo on the survivors.
-4. Later: calibrate costs against FTMO MT5 data (user will provide exports from an FTMO Free Trial account).
+## Status (2026-10-07): research PAUSED by the user
+- Tested and logged (~5,000 trials in research/trials.jsonl): A1, A2, B1, B2, B3, C1 scan, D1, D2 (definitive runs on
+  true-UTC data with frozen cost model v3). None survives: D2 passed IS but FAILED OOS 2021-2023.
+- E1 (VIX term structure / spikes) was pre-registered; its implementation was stopped mid-way and is UNFINISHED
+  and UNTESTED (pfbot/data/cboe.py, pfbot/strategies/e1_vix.py, research/run_e1.py, tests/test_e1.py).
+- Key reports: research/reports/cost_model.md, prop_economics.md, data_quality.md, *_IS_v3.md, D2_OOS.md.
+- Do not resume without the user's explicit go-ahead.
 
 Work on branch `ccr-93d9848a-98ftn2` unless told otherwise. Using subagents to test hypotheses in parallel is approved by the user.
 
