@@ -2,6 +2,9 @@
 
 **Status:** pre-registered, not yet tested.
 
+**Definitive IS result (true-UTC data, cost model v3, 2026-10-07):** D2: PASS in all 3 groups; 10:00 London pooled +0.079 R (t 3.54, month-avg t 2.05), 12:00 +0.069 R (t 3.06/1.81), 14:00 +0.067 R (t 2.76/1.81); 5/6 pairs positive (USDJPY negative). Earlier results above used
+mis-stamped data (1h off in US DST) and are superseded.
+
 ## Mechanism
 Foreign investors holding US equities hedge the currency exposure and rebalance those hedges at
 month-end, typically executing at the WM/Reuters 4pm London fix. When US equities have risen over the

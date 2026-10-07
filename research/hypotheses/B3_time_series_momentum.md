@@ -3,6 +3,9 @@
 **Status:** REJECTED in-sample (2026-10-06). No configuration has t > 1.5 on two instruments; best
 L=20 long-only on US100 (+0.05 R, t 1.55) but ~0 on US500 and negative on XAUUSD. See research/reports/B3_IS.md.
 
+**Definitive IS result (true-UTC data, cost model v3, 2026-10-07):** B3: best L=60,k=2,long-only t 1.26 / 0.14 / 1.21; rejected. Earlier results above used
+mis-stamped data (1h off in US DST) and are superseded.
+
 ## Mechanism
 An asset's own past 1-12 month return predicts its next-month return, across equity indices,
 bonds, currencies and commodities (Moskowitz, Ooi & Pedersen 2012; Hurst, Ooi & Pedersen 2017

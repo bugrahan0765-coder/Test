@@ -2,6 +2,9 @@
 
 **Status:** RUN 2026-10-06 with cost model v1 (constant points): zero candidates; median discovery mean -0.18 sigma, best t 0.48. See research/reports/C1_scan.md. Cost model v1 overstated historical costs (see research/reports/cost_model.md).
 
+**Definitive IS result (true-UTC data, cost model v3, 2026-10-07):** C1v3: 0 candidates; 15 configs with discovery t > 2 vs 29.9 expected under the null. Earlier results above used
+mis-stamped data (1h off in US DST) and are superseded.
+
 ## Why a scan
 A1, A2, B1-B3 showed that individual textbook effects are too weak after CFD costs. The prop
 economics study (research/reports/prop_economics.md) shows that a portfolio of components with

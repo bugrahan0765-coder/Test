@@ -2,6 +2,9 @@
 
 **Status:** pre-registered, not yet tested.
 
+**Definitive IS result (true-UTC data, cost model v3, 2026-10-07):** D1: FAIL, all pooled groups negative (opposite to hypothesis). Earlier results above used
+mis-stamped data (1h off in US DST) and are superseded.
+
 ## Mechanism
 Ranaldo (2009, "Segmentation and time-of-day patterns in foreign exchange markets") and Breedon &
 Ranaldo (2013, "Intraday patterns in FX returns and order flow") find that a currency tends to

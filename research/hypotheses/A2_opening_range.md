@@ -5,6 +5,9 @@
 Opening ranges are narrow (stop ~8 US100 points) so spread + slippage cost 25-40% of the risk.
 See research/reports/A2_IS.md.
 
+**Definitive IS result (true-UTC data, cost model v3, 2026-10-07):** A2: N=5,tR=10 candle US100 +0.17 R (t 2.34) but US500 +0.03 R (t 0.43); fails sister check. Earlier results above used
+mis-stamped data (1h off in US DST) and are superseded.
+
 ## Mechanism
 Orders that accumulate overnight are executed at the cash open; the direction of the opening
 imbalance tends to persist for the session (Zarattini & Aziz 2023 on QQQ with 5-minute opening

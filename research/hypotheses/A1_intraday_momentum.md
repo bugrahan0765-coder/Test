@@ -4,6 +4,9 @@
 (mean R -0.05 to -0.17, t-stats -1.3 to -8.9). Zero-cost raw edge is in the predicted direction but tiny
 (+0.01..+0.03 R, t about 1), smaller than one spread (~0.1 R). See research/reports/A1_IS.md.
 
+**Definitive IS result (true-UTC data, cost model v3, 2026-10-07):** A1: 0/12 configs positive on both; best US500 +0.02 R. Earlier results above used
+mis-stamped data (1h off in US DST) and are superseded.
+
 ## Mechanism
 Gao, Han, Li, Zhou (2018, JFE): the S&P 500 ETF return from the previous close to 10:00 ET
 predicts the return of the last half hour (15:30-16:00 ET). Proposed drivers: dealers hedging

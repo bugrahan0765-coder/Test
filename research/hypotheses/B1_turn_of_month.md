@@ -5,6 +5,9 @@ best d_in=-1,d_out=3,k=2: US100 +0.096 R (t 1.55), US500 +0.096 R (t 1.26), ~60 
 bar (t > 1.5 on both) is missed on US500. Kept on a watch list as a candidate portfolio component; any reuse
 must count these 16 trials. See research/reports/B1_IS.md.
 
+**Definitive IS result (true-UTC data, cost model v3, 2026-10-07):** B1: best d_in=-2,d_out=3,k=2 US100 +0.09 R (t 1.29), US500 +0.05 R (t 0.68); not passed. Earlier results above used
+mis-stamped data (1h off in US DST) and are superseded.
+
 ## Mechanism
 Equity index returns concentrate in the window from the last trading day of a month to the first
 few trading days of the next (Ariel 1987; Lakonishok & Smidt 1988; McConnell & Xu 2008 across 35
