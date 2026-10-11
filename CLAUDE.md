@@ -46,6 +46,7 @@ They have some programming knowledge. Be honest about odds; never promise profit
   (research/reports/Kurumsal ve başarılı trader stratejileri.md); AMD "maze" model (pfbot/features/amd_maze.py,
   tradingview/amd_maze.pine, descriptive only); F1 analog pattern memory REJECTED IS (F1_IS.md);
   G1 Wyckoff spring/upthrust (the user's own setup, price-only, no volume in data) REJECTED IS (G1_IS.md).
+  F2 fractal maze (same AMD on M1+M5) REJECTED IS on US100 (9 trades in 6 years; F2_IS.md, US500 skipped).
   CBOE files in data/external are gitignored: re-download with `python -m pfbot.data.cboe`.
 
 Work on branch `ccr-93d9848a-98ftn2` unless told otherwise. Using subagents to test hypotheses in parallel is approved by the user.
