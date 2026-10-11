@@ -1,0 +1,185 @@
+// AMD Labirent modeli (Akümülasyon -> Manipülasyon -> Dağıtım), 5 periyot SMA üzerinde.
+// Python karşılığı: pfbot/features/amd_maze.py (aynı algoritma, testli).
+//
+// Labirent fikri: öncü hem girişten (penceredeki ilk mum) hem çıkıştan (ŞU ANKİ mum)
+// aynı anda her yöne yayılır; iki cephenin çakıştığı nokta M -> D geçişidir.
+//   - İleri cephe : A (yatay) + M (yukarı / aşağı / yatay), her olası buluşma mumu t2 için en iyi t1
+//   - Geri cephe  : çıkıştan (şu anki mum) t2'ye kadar D (yukarı / aşağı / yatay)
+//   - Birleştirme : toplam maliyet = ileri + geri, t2 üzerinden minimum
+// A->M ve M->D geçişleri 3 yollu (U yukarı, D aşağı, F yatay) => 9 senaryo.
+// Her faz SMA üzerine en küçük kareler doğrusu ile oturtulur; eğim (ATR/mum) yönü belirler.
+// Eğim senaryonun istediği yönde değilse sınıra kırpılır ve sapma kadar maliyet eklenir
+// (kısıtlı en küçük kareler). "Uyumlu" = her fazın serbest eğimi zaten istenen yönde.
+//
+// UYARI: Tanımlayıcıdır, tahmin değildir. Dağıtım fazı şu anki mumda bittiği için
+// olmuş olanı etiketler. Test edilmeden işlem kararı için kullanılmamalı.
+
+//@version=5
+indicator("AMD Labirent (5-SMA)", overlay = true, max_bars_back = 1000, max_lines_count = 50, max_labels_count = 50, max_boxes_count = 50)
+
+win     = input.int(60, "Pencere (mum)", minval = 15, maxval = 500)
+smaLen  = input.int(5, "SMA uzunluğu", minval = 1)
+minSeg  = input.int(5, "En kısa faz (mum)", minval = 2)
+flatThr = input.float(0.05, "Yatay eşiği (ATR / mum)", minval = 0.0, step = 0.01)
+atrLen  = input.int(14, "ATR uzunluğu", minval = 1)
+showTbl = input.bool(true, "9 senaryo tablosunu göster")
+
+sma = ta.sma(close, smaLen)
+atr = ta.sma(ta.tr(true), atrLen)
+plot(sma, "SMA", color = color.orange, linewidth = 2)
+
+INF = 1e18
+
+dirOf(s) => s > flatThr ? 1 : s < -flatThr ? -1 : 0
+dirName(d) => d == 1 ? "U" : d == -1 ? "D" : "F"
+
+// y[i:j] (j hariç) üzerinde doğru: [eğim, SSE, x ortalaması, y ortalaması, Var_x]
+fitSeg(float[] sx, float[] sy, float[] sxx, float[] sxy, float[] syy, int i, int j) =>
+    n   = j - i
+    ax  = array.get(sx, j) - array.get(sx, i)
+    ay  = array.get(sy, j) - array.get(sy, i)
+    axx = array.get(sxx, j) - array.get(sxx, i)
+    axy = array.get(sxy, j) - array.get(sxy, i)
+    ayy = array.get(syy, j) - array.get(syy, i)
+    vx  = axx - ax * ax / n
+    cxy = axy - ax * ay / n
+    vy  = ayy - ay * ay / n
+    slope = vx > 0 ? cxy / vx : 0.0
+    sse   = math.max(vy - slope * cxy, 0.0)
+    [slope, sse, ax / n, ay / n, vx]
+
+// eğimi istenen yönün sınırına kırp
+clampSlope(float s, int want) =>
+    want == 1 ? math.max(s, flatThr) : want == -1 ? math.min(s, -flatThr) : math.min(math.max(s, -flatThr), flatThr)
+
+segCost(float[] sx, float[] sy, float[] sxx, float[] sxy, float[] syy, int i, int j, int want) =>
+    [s, e, mx, my, vx] = fitSeg(sx, sy, sxx, sxy, syy, i, j)
+    sc = clampSlope(s, want)
+    e + (s - sc) * (s - sc) * vx
+
+var line[]  lines  = array.new_line()
+var box[]   boxes  = array.new_box()
+var label[] labels = array.new_label()
+var table   tbl    = table.new(position.top_right, 5, 11, border_width = 1)
+
+if barstate.islast and bar_index >= win + math.max(smaLen, atrLen) and atr > 0
+    if win < 3 * minSeg
+        runtime.error("Pencere en az 3 x en kısa faz olmalı")
+    // eski çizimleri temizle
+    for l in lines
+        line.delete(l)
+    for b in boxes
+        box.delete(b)
+    for lb in labels
+        label.delete(lb)
+    array.clear(lines)
+    array.clear(boxes)
+    array.clear(labels)
+
+    a = atr
+    // önek toplamları (k = 0 en eski mum, k = win-1 şu anki mum)
+    sx  = array.new_float(win + 1, 0.0)
+    sy  = array.new_float(win + 1, 0.0)
+    sxx = array.new_float(win + 1, 0.0)
+    sxy = array.new_float(win + 1, 0.0)
+    syy = array.new_float(win + 1, 0.0)
+    for k = 0 to win - 1
+        yk = sma[win - 1 - k] / a
+        array.set(sx,  k + 1, array.get(sx, k)  + k)
+        array.set(sy,  k + 1, array.get(sy, k)  + yk)
+        array.set(sxx, k + 1, array.get(sxx, k) + k * k)
+        array.set(sxy, k + 1, array.get(sxy, k) + k * yk)
+        array.set(syy, k + 1, array.get(syy, k) + yk * yk)
+
+    dirs = array.from(1, -1, 0)
+
+    // A fazı (yatay) maliyeti, her t1 için
+    costA = array.new_float(win + 1, INF)
+    for t1 = minSeg to win - 2 * minSeg
+        array.set(costA, t1, segCost(sx, sy, sxx, sxy, syy, 0, t1, 0))
+
+    // İleri cephe: her t2 ve M yönü için en iyi t1
+    fwd   = array.new_float(3 * (win + 1), INF)
+    fwdT1 = array.new_int(3 * (win + 1), 0)
+    for t2 = 2 * minSeg to win - minSeg
+        for mi = 0 to 2
+            best = INF
+            arg  = 0
+            for t1 = minSeg to t2 - minSeg
+                c = array.get(costA, t1) + segCost(sx, sy, sxx, sxy, syy, t1, t2, array.get(dirs, mi))
+                if c < best
+                    best := c
+                    arg  := t1
+            array.set(fwd,   mi * (win + 1) + t2, best)
+            array.set(fwdT1, mi * (win + 1) + t2, arg)
+
+    // Geri cephe (çıkış = şu anki mum) ve buluşma
+    resCost = array.new_float(9, INF)
+    resT1   = array.new_int(9, 0)
+    resT2   = array.new_int(9, 0)
+    resOk   = array.new_bool(9, false)
+    for mi = 0 to 2
+        for di = 0 to 2
+            best = INF
+            bt2  = 0
+            for t2 = 2 * minSeg to win - minSeg
+                c = array.get(fwd, mi * (win + 1) + t2) + segCost(sx, sy, sxx, sxy, syy, t2, win, array.get(dirs, di))
+                if c < best
+                    best := c
+                    bt2  := t2
+            idx = mi * 3 + di
+            array.set(resCost, idx, best)
+            array.set(resT2,   idx, bt2)
+            t1r = array.get(fwdT1, mi * (win + 1) + bt2)
+            array.set(resT1,   idx, t1r)
+            [sA, eA, mxA, myA, vA] = fitSeg(sx, sy, sxx, sxy, syy, 0, t1r)
+            [sM, eM, mxM, myM, vM] = fitSeg(sx, sy, sxx, sxy, syy, t1r, bt2)
+            [sD, eD, mxD, myD, vD] = fitSeg(sx, sy, sxx, sxy, syy, bt2, win)
+            array.set(resOk, idx, dirOf(sA) == 0 and dirOf(sM) == array.get(dirs, mi) and dirOf(sD) == array.get(dirs, di))
+
+    bestIdx = array.indexof(resCost, array.min(resCost))
+    t1 = array.get(resT1, bestIdx)
+    t2 = array.get(resT2, bestIdx)
+    mD = array.get(dirs, int(bestIdx / 3))
+    dD = array.get(dirs, bestIdx % 3)
+    starts = array.from(0, t1, t2)
+    ends   = array.from(t1, t2, win)
+    wants  = array.from(0, mD, dD)
+    names  = array.from("A (F)", "M (" + dirName(mD) + ")", "D (" + dirName(dD) + ")")
+    cols   = array.from(color.gray, color.red, color.blue)
+    for p = 0 to 2
+        i = array.get(starts, p)
+        j = array.get(ends, p)
+        [s0, e, mx, my, vx] = fitSeg(sx, sy, sxx, sxy, syy, i, j)
+        s = clampSlope(s0, array.get(wants, p))
+        xL = bar_index - (win - 1 - i)
+        xR = bar_index - (win - j)
+        yL = (my + s * (i - mx)) * a
+        yR = (my + s * (j - 1 - mx)) * a
+        hi = high[win - 1 - i]
+        lo = low[win - 1 - i]
+        for k = i to j - 1
+            hi := math.max(hi, high[win - 1 - k])
+            lo := math.min(lo, low[win - 1 - k])
+        c = array.get(cols, p)
+        array.push(boxes, box.new(xL, hi, xR, lo, border_color = color.new(c, 60), bgcolor = color.new(c, 88)))
+        array.push(lines, line.new(xL, yL, xR, yR, color = c, width = 3))
+        array.push(labels, label.new(xL, hi, array.get(names, p), color = color.new(c, 20), textcolor = color.white, style = label.style_label_down, size = size.small))
+    okTxt = array.get(resOk, bestIdx) ? "uyumlu" : "UYUMSUZ (net AMD yok)"
+    array.push(labels, label.new(bar_index, low, "ÇIKIŞ\n" + okTxt, color = color.new(color.purple, 10), textcolor = color.white, style = label.style_label_up, size = size.small))
+
+    if showTbl
+        table.cell(tbl, 0, 0, "Senaryo", bgcolor = color.new(color.black, 20), text_color = color.white)
+        table.cell(tbl, 1, 0, "Maliyet", bgcolor = color.new(color.black, 20), text_color = color.white)
+        table.cell(tbl, 2, 0, "M başl. (mum önce)", bgcolor = color.new(color.black, 20), text_color = color.white)
+        table.cell(tbl, 3, 0, "D başl. (mum önce)", bgcolor = color.new(color.black, 20), text_color = color.white)
+        table.cell(tbl, 4, 0, "Uyumlu", bgcolor = color.new(color.black, 20), text_color = color.white)
+        for idx = 0 to 8
+            c  = array.get(resCost, idx)
+            nm = "A(F)>M(" + dirName(array.get(dirs, int(idx / 3))) + ")>D(" + dirName(array.get(dirs, idx % 3)) + ")"
+            bg = idx == bestIdx ? color.new(color.green, 60) : color.new(color.gray, 85)
+            table.cell(tbl, 0, idx + 1, nm, bgcolor = bg)
+            table.cell(tbl, 1, idx + 1, str.tostring(c, "#.##"), bgcolor = bg)
+            table.cell(tbl, 2, idx + 1, str.tostring(win - 1 - array.get(resT1, idx)), bgcolor = bg)
+            table.cell(tbl, 3, idx + 1, str.tostring(win - 1 - array.get(resT2, idx)), bgcolor = bg)
+            table.cell(tbl, 4, idx + 1, array.get(resOk, idx) ? "evet" : "hayır", bgcolor = bg)
