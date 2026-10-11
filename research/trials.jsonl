@@ -4982,3 +4982,5 @@
 {"timestamp": "2026-10-11T12:50:06.335766+00:00", "hypothesis_id": "E1", "params": {"symbol": "US500", "period": "IS", "variant": "ts", "th": 1.0}, "n_obs": 1079, "sharpe": 0.024674431346297793}
 {"timestamp": "2026-10-11T12:50:12.813184+00:00", "hypothesis_id": "E1", "params": {"symbol": "US500", "period": "IS", "variant": "spike", "jump": 0.1}, "n_obs": 111, "sharpe": -0.11427186797548415}
 {"timestamp": "2026-10-11T12:50:14.999390+00:00", "hypothesis_id": "E1", "params": {"symbol": "US500", "period": "IS", "variant": "spike", "jump": 0.2}, "n_obs": 37, "sharpe": -0.241542631232491}
+{"timestamp": "2026-10-11T13:26:15.111606+00:00", "hypothesis_id": "F2", "params": {"symbol": "US100", "period": "IS", "rho": 0.8, "exit": "2R"}, "n_obs": 9, "sharpe": -0.6711863833254211}
+{"timestamp": "2026-10-11T13:26:16.382555+00:00", "hypothesis_id": "F2", "params": {"symbol": "US100", "period": "IS", "rho": 0.8, "exit": "time"}, "n_obs": 9, "sharpe": -0.6711863833254211}
