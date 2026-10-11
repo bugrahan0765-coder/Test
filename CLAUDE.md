@@ -38,14 +38,15 @@ They have some programming knowledge. Be honest about odds; never promise profit
 ## Status (2026-10-07): research PAUSED by the user
 - Tested and logged (~5,000 trials in research/trials.jsonl): A1, A2, B1, B2, B3, C1 scan, D1, D2 (definitive runs on
   true-UTC data with frozen cost model v3). None survives: D2 passed IS but FAILED OOS 2021-2023.
-- E1 (VIX term structure / spikes) was pre-registered; its implementation was stopped mid-way and is UNFINISHED
-  and UNTESTED (pfbot/data/cboe.py, pfbot/strategies/e1_vix.py, research/run_e1.py, tests/test_e1.py).
+- E1 (VIX term structure / spikes): completed and run 2026-10-11, REJECTED in-sample (research/reports/E1_IS.md).
+  The contango filter adds only ~+0.007 R/day over plain always-long; spike rebounds show nothing.
 - Key reports: research/reports/cost_model.md, prop_economics.md, data_quality.md, *_IS_v3.md, D2_OOS.md.
 - Do not resume without the user's explicit go-ahead.
 - 2026-10-11 (user asked for these): research report on institutions/proven traders
   (research/reports/Kurumsal ve başarılı trader stratejileri.md); AMD "maze" model (pfbot/features/amd_maze.py,
   tradingview/amd_maze.pine, descriptive only); F1 analog pattern memory REJECTED IS (F1_IS.md);
   G1 Wyckoff spring/upthrust (the user's own setup, price-only, no volume in data) REJECTED IS (G1_IS.md).
+  CBOE files in data/external are gitignored: re-download with `python -m pfbot.data.cboe`.
 
 Work on branch `ccr-93d9848a-98ftn2` unless told otherwise. Using subagents to test hypotheses in parallel is approved by the user.
 
