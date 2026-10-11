@@ -42,6 +42,10 @@ They have some programming knowledge. Be honest about odds; never promise profit
   and UNTESTED (pfbot/data/cboe.py, pfbot/strategies/e1_vix.py, research/run_e1.py, tests/test_e1.py).
 - Key reports: research/reports/cost_model.md, prop_economics.md, data_quality.md, *_IS_v3.md, D2_OOS.md.
 - Do not resume without the user's explicit go-ahead.
+- 2026-10-11 (user asked for these): research report on institutions/proven traders
+  (research/reports/Kurumsal ve başarılı trader stratejileri.md); AMD "maze" model (pfbot/features/amd_maze.py,
+  tradingview/amd_maze.pine, descriptive only); F1 analog pattern memory REJECTED IS (F1_IS.md);
+  G1 Wyckoff spring/upthrust (the user's own setup, price-only, no volume in data) REJECTED IS (G1_IS.md).
 
 Work on branch `ccr-93d9848a-98ftn2` unless told otherwise. Using subagents to test hypotheses in parallel is approved by the user.
 
