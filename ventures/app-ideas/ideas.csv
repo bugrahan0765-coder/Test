@@ -1,0 +1,34 @@
+id,isim,kaynak,ozet,k1_icerik,k2_3sn,k3_kimlik,k4_kisisel,k5_marka,k6_duygu,k7_tekrar,k8_odeme,k9_model,k10_pazar,toplam,durum,not
+F01,Fincan Roast,appstore+tiktok_tr,Kahve fincani fotografindan mizahi paylasilabilir fal karti; grup modu,2,2,1,2,1,2,2,2,2,1,17,yedek,En yuksek puan ama Turkiye'de cok kalabalik (Binnaz/Falci Baci/Falji vb. 10M+ indirme). Fark sadece ton olur. Ikinci turda test.
+F02,Tarz Analizi,appstore,Kiyafet/oda fotografina estetik etiketi ve esprili puan karti,2,2,2,2,1,2,1,2,1,2,17,elendi-secimde,Puan yuksek ama ChatGPT ucretsiz yapiyor; haksiz avantaj yok; vucut yargilama riski.
+F03,Yesilcam Afisi (Yuzum Hangi Karakter),appstore,Selfie -> Yesilcam afisi / minyatur tarzi portre; yuz ve ten korunur,2,2,2,2,2,2,1,1,1,1,16,yedek,Kulturel tarz guclu ama goruntu API maliyeti ve ChatGPT/Gemini ile kopyalanabilir; Apple 4.3 riski yuksek.
+F04,Grup Karnesi (Sohbet Yillik Ozeti),appstore,WhatsApp disa aktarimindan cihaz icinde yil sonu 'karne': en cok yazan / gec cevap veren / gece kusu,2,2,1,2,2,2,0,2,2,1,16,SECILDI,Zamanlama mukemmel (Aralik-Ocak zirvesi). Grup icinde paylasilinca herkes kendi grubunu ister. Yabanci rakipler var ama Turkce/karne formati yok. Gizlilik: sadece cihazda isleme.
+F05,Renk Mevsimi,adjacent,Selfie -> kisisel renk mevsimi ve palet karti; kapsayici (Akdeniz/esmer ten / basortusu renkleri),2,2,2,2,1,2,0,1,2,2,16,yedek,TikTok'ta kanitli trend; Ingilizce pazar kalabalik; dogruluk ve onyargi riski.
+F06,Mani ve Kina Yazari,tiktok_tr,Kina/nisan/sunnet/mezuniyet icin kisiye ozel mani ve konusma + sozlu video karti,2,1,2,2,1,2,1,2,2,1,16,yedek,Rakip bulunamadi; dugun harcamasi yuksek. Dugun sezonu yaz -> Mart-Nisan'da test etmek daha dogru.
+F07,Dizi Sahnesi,tiktok_tr,Siradan bir durumu dramatik Turk dizisi sahnesine cevirir: senaryo + dramatik ses + altyazi karti,2,2,1,2,2,2,1,1,1,2,16,SECILDI,Ciktinin kendisi TikTok videosu. Turkce haksiz avantaj + global Turk dizisi hayran kitlesi. Gercek oyuncu/dizi/muzik yok.
+F08,Goz Karari (Nine Tarifi),tiktok_tr,Ninenin 'goz karari' anlatimini ses kaydindan olculu tarif kartina ve aile tarif defterine cevirir,2,2,2,2,1,2,1,1,1,2,16,SECILDI,Insanlar ninelerini zaten cekiyor; duygusal. Her kulture tasinabilir (global). Gurbetci kitle odeme gucu yuksek.
+F09,Patim,appstore,Evcil hayvan fotografindan esprili kisilik/burc/flort profili karti,2,2,1,2,1,2,1,1,1,2,15,elendi-secimde,Ucuz test ama odeme istegi dusuk; haksiz avantaj yok.
+F10,Nostalji (eski foto canlandirma),appstore,Eski aile fotograflarini onarma/renklendirme/hafif canlandirma; tek seferlik odeme,2,2,1,2,0,2,0,2,2,2,15,elendi-secimde,Cok doymus (Remini/MyHeritage); 4.3 riski yuksek; etik hassasiyet.
+F11,Uyum,appstore,Iki kisinin uyum karti; Turkce argo ile,2,1,1,2,1,2,1,2,1,1,14,elendi-secimde,Astroloji/uyum cok kalabalik; ChatGPT ucretsiz yapar.
+F12,Dizi Karakter Kimligi,appstore,Test + selfie -> hangi Turk dizisi arketipisin kimlik karti,2,1,2,2,2,2,0,1,1,1,14,elendi-secimde,F07 ile ortusuyor; F07 daha guclu.
+F13,Dort Sutun Karakter,adjacent,Saju tarzi dogum tarihinden element karakter karti (eglence),2,1,2,2,2,1,1,1,1,1,14,elendi-secimde,Turkiye'de fal pazari dolu; fark sadece format.
+F14,Fan Kartim,adjacent,K-pop tarzi hologramli kendi fotokartini yap,2,2,2,1,1,2,1,1,1,1,14,elendi-secimde,Telif/idol gorseli riski; dar kitle.
+F15,Yuz Okuma,adjacent,Selfie -> eglencelik yuz okuma arketip karti,2,2,2,2,1,2,0,1,1,1,14,elendi-etik,Sozde bilim fizyonomi; yuz tabanli cikarim politika ve etik riski.
+F16,Kil Portre,adjacent,Her hafta yeni tek dokunuslu yapay zeka tarz efekti,2,2,1,2,1,1,1,1,1,1,13,elendi,Buyuk oyuncular trendi gunler icinde kopyaliyor; birim ekonomisi zor.
+F17,Uzaktan Fotograf Kabini,appstore,Iki kisilik uzaktan fotograf seridi,2,2,1,1,2,1,1,1,1,1,13,elendi-ortusme,Mevcut photobooth uygulamasiyla ortusuyor (kullanici istegiyle bagimsiz tutuldu).
+F18,4Kare,adjacent,Kore tarzi 4 kareli serit uzaktan arkadasla,2,2,1,1,2,1,1,1,1,1,13,elendi-ortusme,Mevcut photobooth uygulamasiyla ortusuyor.
+F19,Adin Hikayesi,appstore+tiktok_tr,Isim anlami/kokeni/karakter karti; gurbetci telaffuz acisi,2,1,2,2,1,1,0,1,1,1,12,elendi-sinirda,Tek seferlik; yanlis etimoloji riski; dusuk gelir.
+F20,Ikimiz,appstore,Ciftlerin ayri cevapladigi karsilastirma oyunu,1,1,2,1,1,2,1,1,1,1,12,elendi-sinirda,Iki cihaz senkronu; ilgi azalinca terk.
+F21,Ortak Gun,adjacent,Cift D-day widget'i ve ortak foto duvari,1,1,1,0,1,2,2,1,2,1,12,elendi-sinirda,Kalabalik kategori; widget kodu zor.
+F22,Arkadas Grubu Rolleri,adjacent,Arkadas grubunda hangi rolsun testi ve kartlari,2,1,2,2,1,2,0,1,0,1,12,elendi-sinirda,Viral ama para kazandirmaz (k9=0).
+F23,Puri-Doodle,adjacent,Purikura/Y2K tarzi cizim ve cikartma editoru,2,2,1,1,1,1,1,1,1,1,12,elendi-sinirda,B612/Snow/Canva karsisinda fark yok.
+F24,Bayram Karti,tiktok_tr,Aliciya ozel bayram/Ramazan mesaji + sesli kart,2,1,1,2,1,2,0,1,1,1,12,elendi-sinirda,Asiri mevsimsel; Ramazan 2027 icin yeniden degerlendir.
+F25,Tezahurat Atolyesi,tiktok_tr,Oyuncu/takim icin ozgun tezahurat sozleri + ritim,2,1,2,1,1,2,1,1,0,1,12,elendi-sinirda,Kufur/hakaret moderasyonu; marka riski; para modeli yok.
+F26,Hatira Defteri 2.0,tiktok_tr,Sinif dijital hatira defteri + yapay zeka sinif rolleri,1,1,2,2,1,2,0,1,1,1,12,elendi-etik,Resit olmayanlarin verisi ve zorbalik riski.
+F27,Gunluk Kolaj,adjacent,Gunde bir sayfa dijital cikartma gunlugu,1,1,1,1,1,1,2,1,1,1,11,elendi,Zayif kanit; viral gosterimi zor.
+F28,Sesli Kart,appstore,Kendi sesinden kisa sarki/jingle hediye,1,1,1,2,1,2,0,1,1,1,11,elendi,Muzik/ses hakki riski; kalabalik.
+F29,Yanlis Defteri,tiktok_tr,Yanlis soruyu fotografla -> konu etiketli hata defteri + tekrar,1,1,1,1,0,1,2,1,2,1,11,TIKTOK-DISI,TikTok puani dusuk ama gercek ihtiyac; arama/ASO kanalina uygun (yan liste).
+F30,Cizdik Bitirdik,adjacent,Link tabanli ciz-tahmin et oyunu,2,1,0,2,1,2,1,0,0,1,10,elendi,Oyun reklam ekonomisi zor; moderasyon.
+F31,Mektup Cozucu,tiktok_tr,Almanca/Hollandaca resmi mektubu fotografla -> Turkce sade ozet + son tarih,0,1,0,1,0,1,1,2,2,2,10,TIKTOK-DISI,Paylasilmaz ama EUR odeme gucu yuksek; arama/ASO + gurbetci topluluklari (yan liste). Hukuki sorumluluk riski.
+F32,Taki Defteri,tiktok_tr,Dugunde takilan takilari kaydetme defteri,0,1,0,0,0,0,0,1,2,1,5,TIKTOK-DISI,Araç; viral degil. Arama kanalina uygun olabilir.
+F33,Sive Atlasi,tiktok_tr,Cumleyi yoresel agizla seslendirir,-,-,-,-,-,-,-,-,-,-,-,elendi-etik,Yoresel/etnik alay sinirina cok yakin; kesin eleme.

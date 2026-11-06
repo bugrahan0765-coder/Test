@@ -43,4 +43,7 @@ paylaşımdan önce 5-7 gün ısınma, yapay zeka içeriği TikTok etiketiyle be
 - `sources/` — ham fikir araştırmaları (kaynaklı)
 - `ideas.csv` — tüm fikirler ve puanları
 - `shortlist.md` — seçilen 3 fikir, gerekçe
-- `test_plan/` — seçilen fikirlerin video senaryoları ve bekleme listesi sayfası
+- `test_plan/videos.md` — 15 video senaryosu ve takvim
+- `test_plan/waitlist.md` — fiyatlı bekleme listesi formu kurulumu ve metinleri
+- `test_plan/results.csv` — video sonuç takip tablosu
+- `test_plan/mockups/` — videolarda kullanılacak örnek çıktı görselleri (1080×1920; kaynak HTML `src/`)
