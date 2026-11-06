@@ -15,6 +15,14 @@
 | Profil ziyareti → link tıklaması | Yönlendirme çalışıyor mu |
 | Fiyatı görüp yine de kayıt olanlar | **Ödeme isteği** (en önemli sinyal) |
 
+**Ana ölçü:** link tıklayanlar (veya sayfa ziyaretçileri) içinde fiyatı görüp kayıt olanların oranı.
+Video sayısı az (15) olduğu için izlenmeye dayalı ölçütler ikincildir; ziyaretçi bazında oran çok daha
+fazla bağımsız deneme içerir. (5 girişin 4'ünün hesap ortalamasını geçmesi tesadüfen ~%19 olur.)
+
+**Paylaşım saatleri dengelenir:** fikirler günlere ve saatlere dönüşümlü dağıtılır (A-B-C, B-C-A, ...),
+böylece bir fikir bütün iyi saatleri veya hesabın ısınma dönemini almaz. Her kaydın hangi videodan
+geldiği (zaman damgası) kaydedilir.
+
 ## Karar kuralları (kaba tahminler, kesin sektör ortalaması değil)
 - **Yap:** fikrin videoları birden fazla farklı girişte hesap ortalamasının ≥2 katı izleniyor, istek
   yorumları tekrar ediyor ve fiyatlı sayfada ~100-300 kayıt (veya kayıt/ziyaret oranı belirgin şekilde

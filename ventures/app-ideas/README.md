@@ -40,6 +40,7 @@ paylaşımdan önce 5-7 gün ısınma, yapay zeka içeriği TikTok etiketiyle be
 
 - `scorecard.md` — puanlama kriterleri
 - `test_protocol.md` — video testi, metrikler, yap/bırak kriterleri
+- `tiktok_evidence_method.md` — TikTok verisinden güvenilir kanıt toplama yöntemi (kaynak notlar `research/tiktok_scraping/`)
 - `sources/` — ham fikir araştırmaları (kaynaklı)
 - `ideas.csv` — tüm fikirler ve puanları
 - `shortlist.md` — seçilen 3 fikir, gerekçe
